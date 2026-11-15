@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "838983291633",
+    "project_id": "gentehablando-bb2f7",
+    "storage_bucket": "gentehablando-bb2f7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838983291633:android:cad1e22f88899665bb8f50",
+        "android_client_info": {
+          "package_name": "com.example.gentehablando"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAT9QbwHacAhT-ok2KglYQ7C4nTB5nGW10"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
