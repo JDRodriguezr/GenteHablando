@@ -40,4 +40,9 @@ interface VoiceRepository {
      * Limpia y destruye el motor de Agora para liberar memoria de forma segura.
      */
     fun destroyEngine()
+
+    /**
+     * Activa o desactiva los filtros de IA de supresión de ruido.
+     */
+    fun setAwaNoiseSuppression(enabled: Boolean)
 }

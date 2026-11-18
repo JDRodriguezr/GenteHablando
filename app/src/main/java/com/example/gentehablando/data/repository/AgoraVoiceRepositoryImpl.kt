@@ -87,12 +87,22 @@ class AgoraVoiceRepositoryImpl @Inject constructor(
             config.mEventHandler = rtcEventHandler
             rtcEngine = RtcEngine.create(config)
             
-            // Perfil de audio óptimo para voz humana estándar (chat 1-a-1)
+            // Perfil de audio de alta calidad, orientado a conversaciones puras
             rtcEngine?.setAudioProfile(
                 Constants.AUDIO_PROFILE_SPEECH_STANDARD,
                 Constants.AUDIO_SCENARIO_CHATROOM
             )
-            Log.d("AgoraVoice", "Motor de Agora inicializado correctamente con App ID: ${config.mAppId.take(5)}...")
+            
+            // FILTROS AVANZADOS DE AUDIO (Cancelación de ruido y eco)
+            rtcEngine?.setParameters("{\"che.audio.enable.ns\":true}") // Habilitar Supresión de Ruido
+            rtcEngine?.setParameters("{\"che.audio.enable.aec\":true}") // Habilitar Cancelación de Eco
+            rtcEngine?.setParameters("{\"che.audio.enable.agc\":true}") // Habilitar Control de Ganancia Automática (nivela el volumen)
+            
+            // Filtro de Inteligencia Artificial para supresión de ruido fuerte (AINS - AI Noise Suppression)
+            // Esto elimina ruido de teclado, tráfico, ventiladores, manteniendo solo la voz humana
+            rtcEngine?.setParameters("{\"che.audio.ains_mode\": 1}") 
+
+            Log.d("AgoraVoice", "Motor de Agora inicializado con Filtros de Audio AINS. App ID: ${config.mAppId.take(5)}...")
         } catch (e: Exception) {
             Log.e("AgoraVoice", "Fallo crítico inicializando Agora", e)
         }
@@ -117,7 +127,7 @@ class AgoraVoiceRepositoryImpl @Inject constructor(
         // --- INICIO MODO PRUEBA DE TOKEN ---
         // Generamos un ID pseudo-aleatorio para cada dispositivo para que ambos puedan entrar.
         val randomUid = (1..9999).random() 
-        val token = "007eJxTYJi5J8CqTbM+meO3aKdlb+7SXm4/L3fXtuXcQZ0fV1se7FBgSDExMjVJMjezTE0EMg3MExMtTC0TDRMtTMxTkkwMjS6v+Z7VEMjIEFnUwszEwAiGID43Q3FiTmJ8QVFpalIiAwMTXIKRwRAAWPYiEQ=="
+        val token = "007eJxTYFj3+d3vwuePV36+9415s3GN9RPexYsXfryhEB1X8FUv9NUqBYYUEyNTkyRzM8vURCDTwDwx0cLUMtEw0cLEPCXJxNDILuBXVkMgI8N070UsTAyMYAjiczMUJ+YkxhcUlaYmJTIwMMElGBkMAbmJJ04="
         
         // 2. UNIRSE AL CANAL CON EL UID:
         val joinResult = rtcEngine?.joinChannel(token, "sala_prueba", randomUid, options)
@@ -153,5 +163,21 @@ class AgoraVoiceRepositoryImpl @Inject constructor(
     override fun destroyEngine() {
         RtcEngine.destroy()
         rtcEngine = null
+    }
+
+    override fun setAwaNoiseSuppression(enabled: Boolean) {
+        try {
+            if (enabled) {
+                rtcEngine?.setParameters("{\"che.audio.enable.ns\":true}")
+                rtcEngine?.setParameters("{\"che.audio.ains_mode\":1}")
+                Log.d("AgoraVoice", "Filtro de Ruido IA: ACTIVADO")
+            } else {
+                rtcEngine?.setParameters("{\"che.audio.enable.ns\":false}")
+                rtcEngine?.setParameters("{\"che.audio.ains_mode\":0}")
+                Log.d("AgoraVoice", "Filtro de Ruido IA: DESACTIVADO")
+            }
+        } catch (e: Exception) {
+            Log.e("AgoraVoice", "Error cambiando estado de filtro de ruido", e)
+        }
     }
 }

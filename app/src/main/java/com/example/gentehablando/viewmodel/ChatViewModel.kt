@@ -51,6 +51,9 @@ class ChatViewModel @Inject constructor(
     val isPartnerSpeaking: StateFlow<Boolean> = voiceRepository.observeRemoteSpeakingState()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
+    private val _isNoiseSuppressionEnabled = MutableStateFlow(true)
+    val isNoiseSuppressionEnabled: StateFlow<Boolean> = _isNoiseSuppressionEnabled.asStateFlow()
+
     private var currentRoomId: String = ""
     private var messagesJob: Job? = null
     private var typingJob: Job? = null
@@ -132,6 +135,12 @@ class ChatViewModel @Inject constructor(
         val currentMuteState = isLocalAudioMuted.value
         voiceRepository.muteLocalAudio(!currentMuteState)
         resetInactivityTimer()
+    }
+
+    fun toggleNoiseSuppression() {
+        val newState = !_isNoiseSuppressionEnabled.value
+        _isNoiseSuppressionEnabled.value = newState
+        voiceRepository.setAwaNoiseSuppression(newState)
     }
 
     fun onInputTextChanged(text: String) {

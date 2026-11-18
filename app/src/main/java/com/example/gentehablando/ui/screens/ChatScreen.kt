@@ -28,6 +28,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.Switch
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -62,6 +63,7 @@ fun ChatScreen(
     val isMuted by viewModel.isLocalAudioMuted.collectAsState()
     val isLocalSpeaking by viewModel.isLocalSpeaking.collectAsState()
     val isPartnerSpeaking by viewModel.isPartnerSpeaking.collectAsState()
+    val isNoiseFilterOn by viewModel.isNoiseSuppressionEnabled.collectAsState()
 
     val showInactivityWarning by viewModel.showInactivityWarning.collectAsState()
     val inactivitySecondsLeft by viewModel.inactivitySecondsLeft.collectAsState()
@@ -95,6 +97,13 @@ fun ChatScreen(
             // Ya tiene permisos concedidos
             viewModel.initRoom(roomId = roomId, partnerAlias = partnerAlias)
         }
+    }
+
+    // Interceptar el botón/gesto de "Atrás" del celular estando en la sala
+    androidx.activity.compose.BackHandler {
+        // En lugar de salir directo o devolverlo al menú (lo que rompería la sala),
+        // forzamos al usuario a ver el cuadro de diálogo de salida formal.
+        showExitDialog = true
     }
 
     val listState = rememberLazyListState()
@@ -256,6 +265,28 @@ fun ChatScreen(
                         fontWeight = FontWeight.Bold
                     )
                 }
+            }
+
+            // Sub-fila para controles secundarios (Filtro de Ruido)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 14.dp, vertical = 4.dp)
+                    .padding(bottom = 6.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Aislamiento de voz con IA",
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                
+                Switch(
+                    checked = isNoiseFilterOn,
+                    onCheckedChange = { viewModel.toggleNoiseSuppression() },
+                    modifier = Modifier.height(24.dp)
+                )
             }
         }
 

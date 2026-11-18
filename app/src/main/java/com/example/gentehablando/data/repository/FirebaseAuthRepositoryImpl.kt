@@ -82,6 +82,16 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
         } catch (_: Exception) {}
     }
 
+    override suspend fun deleteAccount(): Resource<Unit> {
+        return try {
+            auth.currentUser?.delete()?.await()
+            prefs.edit().remove("persistent_uid").apply()
+            Resource.Success(Unit)
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage ?: "Error al eliminar la cuenta")
+        }
+    }
+
     override fun observeAuthState(): Flow<String?> = callbackFlow {
         val listener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             val uid = firebaseAuth.currentUser?.uid ?: getLocalPersistentUid()

@@ -43,4 +43,16 @@ abstract class RepositoryModule {
     abstract fun bindVoiceRepository(
         impl: com.example.gentehablando.data.repository.AgoraVoiceRepositoryImpl
     ): com.example.gentehablando.domain.repository.VoiceRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindUserRepository(
+        impl: com.example.gentehablando.data.repository.FirebaseUserRepositoryImpl
+    ): com.example.gentehablando.domain.repository.UserRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindCourseRepository(
+        impl: com.example.gentehablando.data.repository.CourseRepositoryImpl
+    ): com.example.gentehablando.domain.repository.CourseRepository
 }

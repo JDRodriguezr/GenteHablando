@@ -23,7 +23,7 @@ class FirebaseChatRepositoryImpl @Inject constructor(
         val messagesRef = firestore.collection("rooms")
             .document(roomId)
             .collection("messages")
-            .orderBy("timestamp", Query.Direction.ASCENDING)
+            .orderBy("createdAt", Query.Direction.ASCENDING) // Ordenamos por tiempo de Servidor
 
         val listener = messagesRef.addSnapshotListener { snapshot, error ->
             if (error != null) {
@@ -36,6 +36,8 @@ class FirebaseChatRepositoryImpl @Inject constructor(
                     val id = doc.id
                     val text = doc.getString("text") ?: ""
                     val senderId = doc.getString("senderId") ?: ""
+                    
+                    // Si el createdAt es null (está en tránsito hacia Firebase), usamos la fecha de hoy
                     val createdAt = doc.getDate("createdAt") ?: Date()
                     val timeFormatted = SimpleDateFormat("HH:mm", Locale.getDefault()).format(createdAt)
 
@@ -59,8 +61,7 @@ class FirebaseChatRepositoryImpl @Inject constructor(
             val messageMap = hashMapOf(
                 "text" to text.trim(),
                 "senderId" to senderId,
-                "createdAt" to FieldValue.serverTimestamp(),
-                "timestamp" to System.currentTimeMillis()
+                "createdAt" to FieldValue.serverTimestamp() // Sello universal de Google
             )
 
             firestore.collection("rooms")

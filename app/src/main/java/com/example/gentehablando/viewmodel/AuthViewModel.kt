@@ -13,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val courseRepository: com.example.gentehablando.domain.repository.CourseRepository
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow<Resource<String>>(Resource.Idle)
@@ -32,6 +33,10 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             val result = authRepository.signInWithGoogle(idToken)
             _loginState.value = result
+            // Si el login fue exitoso, sincronizamos el progreso de los cursos locales a Firebase
+            if (result is Resource.Success) {
+                courseRepository.syncLocalProgressToRemote()
+            }
         }
     }
     

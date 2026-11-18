@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.gentehablando.model.UserRole
 import com.example.gentehablando.ui.screens.LoginScreen
+import com.example.gentehablando.ui.screens.GuidesScreen
 import com.example.gentehablando.viewmodel.AuthViewModel
 import com.example.gentehablando.ui.screens.ChatScreen
 import com.example.gentehablando.ui.screens.FeedbackScreen
@@ -27,7 +28,9 @@ object Destinations {
     const val CHAT = "chat"
     const val FEEDBACK = "feedback"
     const val LOGIN = "login"
-
+    const val PROFILE = "profile"
+    const val GUIDES = "guides"
+    const val COURSE_DETAIL = "course_detail"
 }
 
 @Composable
@@ -42,15 +45,48 @@ fun AppNavigation(
     ) {
         composable(Destinations.HOME) {
             val authViewModel: AuthViewModel = hiltViewModel()
+            val profileViewModel: com.example.gentehablando.viewmodel.ProfileViewModel = hiltViewModel()
+            
             HomeScreen(
                 authViewModel = authViewModel,
+                profileViewModel = profileViewModel,
                 onConnectClick = { role ->
                     navController.navigate("${Destinations.GUIDELINES}/${role.name}")
                 },
                 onLoginClick = { intendedRole ->
-                    // Navegamos al login pasándole el rol que quería el usuario
                     navController.navigate("${Destinations.LOGIN}/${intendedRole.name}")
+                },
+                onProfileClick = {
+                    navController.navigate(Destinations.PROFILE)
+                },
+                onGuidesClick = {
+                    navController.navigate(Destinations.GUIDES)
                 }
+            )
+        }
+
+        composable(Destinations.GUIDES) {
+            val courseViewModel: com.example.gentehablando.viewmodel.CourseViewModel = hiltViewModel()
+            GuidesScreen(
+                viewModel = courseViewModel,
+                onCourseClick = { courseId ->
+                    navController.navigate("${Destinations.COURSE_DETAIL}/$courseId")
+                },
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(
+            route = "${Destinations.COURSE_DETAIL}/{courseId}",
+            arguments = listOf(navArgument("courseId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val courseId = backStackEntry.arguments?.getString("courseId") ?: return@composable
+            val courseViewModel: com.example.gentehablando.viewmodel.CourseViewModel = hiltViewModel()
+            
+            com.example.gentehablando.ui.screens.CourseDetailScreen(
+                courseId = courseId,
+                viewModel = courseViewModel,
+                onNavigateBack = { navController.popBackStack() }
             )
         }
 
@@ -118,7 +154,9 @@ fun AppNavigation(
                 role = selectedRole,
                 viewModel = matchmakingViewModel,
                 onCancel = {
-                    navController.popBackStack()
+                    navController.navigate(Destinations.HOME) {
+                        popUpTo(Destinations.HOME) { inclusive = true }
+                    }
                 },
                 onMatchFound = { roomId ->
                     navController.navigate("${Destinations.CHAT}/$roomId/${selectedRole.name}") {
@@ -154,7 +192,7 @@ fun AppNavigation(
                 partnerAlias = partnerAlias,
                 viewModel = chatViewModel,
                 onLeaveChat = {
-                    navController.navigate("${Destinations.FEEDBACK}/${selectedRole.name}") {
+                    navController.navigate("${Destinations.FEEDBACK}/${selectedRole.name}/$roomId") {
                         popUpTo(Destinations.CHAT) { inclusive = true }
                     }
                 }
@@ -162,10 +200,14 @@ fun AppNavigation(
         }
 
         composable(
-            route = "${Destinations.FEEDBACK}/{role}",
-            arguments = listOf(navArgument("role") { type = NavType.StringType })
+            route = "${Destinations.FEEDBACK}/{role}/{roomId}",
+            arguments = listOf(
+                navArgument("role") { type = NavType.StringType },
+                navArgument("roomId") { type = NavType.StringType }
+            )
         ) { backStackEntry ->
             val roleParam = backStackEntry.arguments?.getString("role") ?: UserRole.SPEAKER.name
+            val roomId = backStackEntry.arguments?.getString("roomId") ?: ""
             val selectedRole = try {
                 UserRole.valueOf(roleParam)
             } catch (_: Exception) {
@@ -173,13 +215,30 @@ fun AppNavigation(
             }
 
             val partnerAlias = if (selectedRole == UserRole.SPEAKER) "Oyente" else "Hablante"
+            
+            val feedbackViewModel: com.example.gentehablando.viewmodel.FeedbackViewModel = hiltViewModel()
 
             FeedbackScreen(
                 partnerAlias = partnerAlias,
                 role = selectedRole,
+                roomId = roomId,
+                viewModel = feedbackViewModel,
                 onFinish = {
                     navController.navigate(Destinations.HOME) {
                         popUpTo(Destinations.HOME) { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        composable(Destinations.PROFILE) {
+            val profileViewModel: com.example.gentehablando.viewmodel.ProfileViewModel = hiltViewModel()
+            com.example.gentehablando.ui.screens.ProfileScreen(
+                viewModel = profileViewModel,
+                onNavigateBack = { navController.popBackStack() },
+                onLogOutSuccess = {
+                    navController.navigate(Destinations.HOME) {
+                        popUpTo(0) { inclusive = true }
                     }
                 }
             )

@@ -31,6 +31,11 @@ interface AuthRepository {
     fun isUserLoggedInWithAccount(): Boolean
 
     /**
+     * Elimina la cuenta del usuario actual de la base de datos de Firebase.
+     */
+    suspend fun deleteAccount(): Resource<Unit>
+
+    /**
      * Cierra la sesión del usuario.
      */
     suspend fun signOut()

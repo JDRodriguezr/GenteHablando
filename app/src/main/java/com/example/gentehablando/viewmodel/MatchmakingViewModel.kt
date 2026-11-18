@@ -2,6 +2,7 @@ package com.example.gentehablando.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.isActive
 import com.example.gentehablando.domain.model.Resource
 import com.example.gentehablando.domain.repository.AuthRepository
 import com.example.gentehablando.domain.repository.MatchmakingRepository
@@ -31,6 +32,7 @@ class MatchmakingViewModel @Inject constructor(
     val uiState: StateFlow<MatchmakingUiState> = _uiState.asStateFlow()
 
     private var searchJob: Job? = null
+    private var timerJob: Job? = null
 
     private suspend fun getOrSignInUserId(): String {
         val existingId = authRepository.getCurrentUserId()
@@ -44,17 +46,39 @@ class MatchmakingViewModel @Inject constructor(
 
     fun startSearching(role: UserRole) {
         searchJob?.cancel()
+        timerJob?.cancel()
 
         searchJob = viewModelScope.launch {
             val currentUserId = getOrSignInUserId()
             matchmakingRepository.observeMatchmaking(role, currentUserId).collect { state ->
                 _uiState.value = state
+                if (state is MatchmakingUiState.Matched) {
+                    timerJob?.cancel() // Detener timer si encontramos pareja
+                }
+            }
+        }
+        
+        // Manejo del temporizador de espera en pantalla (180 segundos = 3 minutos max)
+        timerJob = viewModelScope.launch {
+            var elapsedSeconds = 0
+            while (isActive && _uiState.value is MatchmakingUiState.Searching) {
+                kotlinx.coroutines.delay(1000L)
+                elapsedSeconds++
+                
+                // Si pasaron 3 minutos (180 segundos)
+                if (elapsedSeconds >= 180) {
+                    // TODO: Implementar unión universal sin importar el rol
+                    _uiState.value = MatchmakingUiState.Searching(elapsedSeconds)
+                } else {
+                    _uiState.value = MatchmakingUiState.Searching(elapsedSeconds)
+                }
             }
         }
     }
 
     fun cancelSearching() {
         searchJob?.cancel()
+        timerJob?.cancel()
         viewModelScope.launch {
             val currentUserId = authRepository.getCurrentUserId()
             if (currentUserId != null) {
