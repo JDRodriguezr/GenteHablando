@@ -39,6 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gentehablando.domain.model.Resource
 import com.example.gentehablando.model.UserRole
+import com.example.gentehablando.utils.AdManager
+import android.app.Activity
 
 @Composable
 fun FeedbackScreen(
@@ -47,8 +49,11 @@ fun FeedbackScreen(
     role: UserRole = UserRole.SPEAKER,
     roomId: String = "",
     viewModel: com.example.gentehablando.viewmodel.FeedbackViewModel,
+    adManager: AdManager,
     onFinish: () -> Unit
 ) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val activity = context as? Activity
     var rating by remember { mutableIntStateOf(0) }
     val feedbackState by viewModel.feedbackState.collectAsState()
 
@@ -60,7 +65,14 @@ fun FeedbackScreen(
     // Observar cuando Firebase termine de guardar exitosamente
     LaunchedEffect(feedbackState) {
         if (feedbackState is Resource.Success) {
-            onFinish()
+            // Antes de devolver al menú, si pasaron 5 minutos mostramos un anuncio
+            if (activity != null) {
+                adManager.showAdIfCoolDownPassed(activity) {
+                    onFinish()
+                }
+            } else {
+                onFinish()
+            }
         }
     }
     

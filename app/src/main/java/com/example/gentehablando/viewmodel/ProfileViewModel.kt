@@ -6,6 +6,7 @@ import com.example.gentehablando.domain.model.Resource
 import com.example.gentehablando.domain.model.UserProfile
 import com.example.gentehablando.domain.repository.AuthRepository
 import com.example.gentehablando.domain.repository.UserRepository
+import com.example.gentehablando.domain.repository.CourseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val courseRepository: CourseRepository
 ) : ViewModel() {
 
     private val _userProfile = MutableStateFlow(UserProfile())
@@ -26,6 +28,12 @@ class ProfileViewModel @Inject constructor(
     val actionState: StateFlow<Resource<Unit>> = _actionState.asStateFlow()
 
     private var profileJob: kotlinx.coroutines.Job? = null
+
+    private val _completedCoursesMap = MutableStateFlow<Map<String, Int>>(emptyMap())
+    val completedCoursesMap: StateFlow<Map<String, Int>> = _completedCoursesMap.asStateFlow()
+
+    // Solo para exponer cuántos cursos existen en total
+    val totalAvailableCourses: Int = courseRepository.getCourses().size
 
     init {
         viewModelScope.launch {
@@ -37,8 +45,14 @@ class ProfileViewModel @Inject constructor(
                             _userProfile.value = profile
                         }
                     }
+                    viewModelScope.launch {
+                        courseRepository.observeCompletedCourses().collect { map ->
+                            _completedCoursesMap.value = map
+                        }
+                    }
                 } else {
                     _userProfile.value = UserProfile() // Usuario limpio si desloguea
+                    _completedCoursesMap.value = emptyMap()
                 }
             }
         }

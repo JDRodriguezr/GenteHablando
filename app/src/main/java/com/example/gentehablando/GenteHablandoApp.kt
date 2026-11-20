@@ -15,6 +15,9 @@ class GenteHablandoApp : Application() {
         // Garantizar la inicialización explícita de Firebase al arrancar la app
         try {
             FirebaseApp.initializeApp(this)
+            
+            // Inicializar el SDK de Google AdMob
+            com.google.android.gms.ads.MobileAds.initialize(this) {}
         } catch (e: Exception) {
             e.printStackTrace()
         }

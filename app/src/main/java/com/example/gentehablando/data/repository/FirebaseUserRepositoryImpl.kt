@@ -87,6 +87,29 @@ class FirebaseUserRepositoryImpl @Inject constructor(
                 transaction.set(userRef, updates, SetOptions.merge())
             }.await()
 
+            // 4. Limpieza automática de la sala (Anti-Zombies y ahorro de Base de Datos)
+            // Si el feedback fue enviado y NO hubo reporte, podemos borrar la sala de forma segura,
+            // ya que el chat fue normal y no necesitamos evidencia.
+            // (Si hubo reporte, la sala se deja intacta para que soporte pueda leerla).
+            if (!isReport && issueType == null) {
+                try {
+                    // Firebase no borra subcolecciones automáticamente, así que debemos borrar
+                    // primero los mensajes si queremos limpiar bien el espacio.
+                    val messagesSnapshot = firestore.collection("rooms").document(roomId)
+                        .collection("messages").get().await()
+                        
+                    firestore.runTransaction { transaction ->
+                        messagesSnapshot.documents.forEach { doc ->
+                            transaction.delete(doc.reference)
+                        }
+                        transaction.delete(firestore.collection("rooms").document(roomId))
+                    }.await()
+                } catch (e: Exception) {
+                    // Si falla el borrado no bloqueamos el feedback exitoso
+                    e.printStackTrace()
+                }
+            }
+
             Resource.Success(Unit)
         } catch (e: Exception) {
             Resource.Error(e.localizedMessage ?: "Error al enviar el feedback al servidor")

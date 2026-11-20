@@ -114,6 +114,79 @@ fun ProfileScreen(
                 }
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Sección de Logros (Completionist de Academia)
+            val completedCourses by viewModel.completedCoursesMap.collectAsState()
+            val totalCourses = viewModel.totalAvailableCourses
+            val completedCount = completedCourses.size
+            val perfectCount = completedCourses.values.count { it == 5 }
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f))
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Progreso de Academia",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        // Cursos Completados
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = "$completedCount/$totalCourses",
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Text(
+                                text = "Completados",
+                                fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                        }
+
+                        // Lecciones Perfectas (5/5)
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    text = "$perfectCount",
+                                    fontSize = 24.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFFFFC107) // Dorado
+                                )
+                                Icon(Icons.Default.Star, contentDescription = null, tint = Color(0xFFFFC107), modifier = Modifier.size(24.dp))
+                            }
+                            Text(
+                                text = "Perfectos",
+                                fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                        }
+                    }
+                    
+                    if (completedCount == totalCourses && perfectCount == totalCourses && totalCourses > 0) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(
+                            text = "¡Completionist Master! \uD83C\uDFC6",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF4CAF50)
+                        )
+                    }
+                }
+            }
+
             Spacer(modifier = Modifier.weight(1f))
 
             if (actionState is Resource.Loading) {

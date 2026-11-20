@@ -69,6 +69,9 @@ dependencies {
     // Google Sign-In (Estándar ultra-estable de Play Services)
     implementation("com.google.android.gms:play-services-auth:21.2.0")
 
+    // Google AdMob (Monetización)
+    implementation("com.google.android.gms:play-services-ads:23.0.0")
+
     // Agora Voice SDK
     implementation("io.agora.rtc:voice-sdk:4.6.4")
 

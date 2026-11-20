@@ -20,6 +20,7 @@ import com.example.gentehablando.ui.screens.MatchmakingScreen
 import com.example.gentehablando.ui.screens.RoleGuidelinesScreen
 import com.example.gentehablando.viewmodel.ChatViewModel
 import com.example.gentehablando.viewmodel.MatchmakingViewModel
+import com.example.gentehablando.utils.AdManager
 
 object Destinations {
     const val HOME = "home"
@@ -47,9 +48,19 @@ fun AppNavigation(
             val authViewModel: AuthViewModel = hiltViewModel()
             val profileViewModel: com.example.gentehablando.viewmodel.ProfileViewModel = hiltViewModel()
             
+            // Inyectamos el cerebro de los anuncios para poder pasárselo a la pantalla de Home
+            val adManager = androidx.compose.ui.platform.LocalContext.current.let { ctx ->
+                // Este Hilt nos devuelve la instancia Singleton real
+                dagger.hilt.android.EntryPointAccessors.fromApplication(
+                    ctx.applicationContext,
+                    com.example.gentehablando.di.AdManagerEntryPoint::class.java
+                ).getAdManager()
+            }
+            
             HomeScreen(
                 authViewModel = authViewModel,
                 profileViewModel = profileViewModel,
+                adManager = adManager,
                 onConnectClick = { role ->
                     navController.navigate("${Destinations.GUIDELINES}/${role.name}")
                 },
@@ -218,11 +229,20 @@ fun AppNavigation(
             
             val feedbackViewModel: com.example.gentehablando.viewmodel.FeedbackViewModel = hiltViewModel()
 
+            // Inyectamos el cerebro de los anuncios para poder pasárselo a la pantalla de Feedback
+            val adManager = androidx.compose.ui.platform.LocalContext.current.let { ctx ->
+                dagger.hilt.android.EntryPointAccessors.fromApplication(
+                    ctx.applicationContext,
+                    com.example.gentehablando.di.AdManagerEntryPoint::class.java
+                ).getAdManager()
+            }
+
             FeedbackScreen(
                 partnerAlias = partnerAlias,
                 role = selectedRole,
                 roomId = roomId,
                 viewModel = feedbackViewModel,
+                adManager = adManager,
                 onFinish = {
                     navController.navigate(Destinations.HOME) {
                         popUpTo(Destinations.HOME) { inclusive = true }

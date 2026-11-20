@@ -46,17 +46,22 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.collectAsState
 import com.example.gentehablando.domain.model.Resource
 import com.example.gentehablando.viewmodel.ProfileViewModel
+import com.example.gentehablando.utils.AdManager
+import android.app.Activity
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     authViewModel: AuthViewModel,
     profileViewModel: ProfileViewModel,
+    adManager: AdManager,
     onConnectClick: (UserRole) -> Unit = {},
     onLoginClick: (UserRole) -> Unit = {},
     onProfileClick: () -> Unit = {},
     onGuidesClick: () -> Unit = {}
 ) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val activity = context as? Activity
     var selectedRole by remember { mutableStateOf(UserRole.SPEAKER) }
     val userProfile by profileViewModel.userProfile.collectAsState()
     var showBannedDialog by remember { mutableStateOf(false) }
@@ -263,15 +268,21 @@ fun HomeScreen(
             Button(
                 onClick = {
                     if (authViewModel.isUserLoggedIn()) {
-                        // Sistema Avanzado de Moderación:
-                        // Comprobamos si tiene 3 o más reportes efectivos en los últimos 30 días
+                        // Sistema Avanzado de Moderación
                         if (userProfile.isBanned()) {
                             showBannedDialog = true
                         } else {
-                            onConnectClick(selectedRole)
+                            // Antes de entrar al Matchmaking, revisamos si toca anuncio
+                            if (activity != null) {
+                                adManager.showAdIfCoolDownPassed(activity) {
+                                    onConnectClick(selectedRole)
+                                }
+                            } else {
+                                onConnectClick(selectedRole)
+                            }
                         }
                     } else {
-                        onLoginClick(selectedRole) // Pasamos el rol que el usuario intentaba elegir
+                        onLoginClick(selectedRole) 
                     }
                 },
                 modifier = Modifier
