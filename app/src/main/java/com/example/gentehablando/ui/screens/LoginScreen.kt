@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -42,13 +43,14 @@ fun LoginScreen(
     }
 
     // 2. Preparar el cliente de Google Sign-In estándar
-    val gso = remember {
+    val webClientId = stringResource(R.string.default_web_client_id)
+    val gso = remember(webClientId) {
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(context.getString(R.string.default_web_client_id))
+            .requestIdToken(webClientId)
             .requestEmail()
             .build()
     }
-    val googleSignInClient = remember {
+    val googleSignInClient = remember(context, gso) {
         GoogleSignIn.getClient(context, gso)
     }
 
