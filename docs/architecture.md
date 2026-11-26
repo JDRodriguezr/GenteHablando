@@ -4,7 +4,7 @@
 
 This review covers the domain models and repository contracts, data implementations, Hilt bindings, ViewModels, and their screen/navigation relationships at commit `56145e0945c21dffb0d008157f3d750b7f978e76`.
 
-No production Kotlin changes accompany this report. The reviewer did not run Gradle, install dependencies, operate a device, contact Firebase or Agora, or measure runtime performance. Build/release configuration and physical-device captures belong to the coordinating review.
+This is a source-level review, not an integration-test report. The 13 proposed architectural corrections remain unimplemented. See the [README verification limits](../README.md#verification-limits) for separate CI and signed-out physical-device evidence; those checks do not reproduce the multi-user risks or complete the acceptance criteria below.
 
 **Observed** means the cited source contains the behavior or missing guard. **Risk** describes its consequence under the stated conditions, not a reproduced production incident. Acceptance criteria below are proposed checks for a future correction; they are not passing test results.
 

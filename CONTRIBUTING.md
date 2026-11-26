@@ -70,9 +70,9 @@ lists Gradle 8.10.2, JDK 17 and a maximum supported API level of 35.
 **CI-tested build configuration:** the current wrapper requests
 Gradle 9.6.0, daemon criteria request JDK 25, and the catalog uses Kotlin 2.1.20
 and Compose BOM 2026.02.01. Daemon criteria can override `JAVA_HOME`.
-[Android run 45908440941](https://github.com/JDRodriguezr/GenteHablando/actions/runs/45908440941)
+[Android run 45909966972](https://github.com/JDRodriguezr/GenteHablando/actions/runs/45909966972)
 passed debug unit tests, lint and APK generation at
-`52dcd5425946b1d5ce61cf38e18b57452473143d`, using a JDK 17 launcher and the
+`5c18af07db0b6eef27db8ea50b1bf52038b8b331`, using a JDK 17 launcher and the
 checked-in Java 25 daemon criteria. This records the tested runner, not a
 guarantee for other environments. Diagnose actual failures before changing
 versions; the first failure was a Compose resource-access lint error, not a

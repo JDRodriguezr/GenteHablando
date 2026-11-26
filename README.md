@@ -22,7 +22,15 @@ The app requests an email scope during Google sign-in and stores messages, feedb
 
 ## Screenshots
 
-Runtime screenshots are not available. Include only genuine captures from an authorized physical-device run, without account details, private conversations, or credentials. Screen coverage, successful login, working conversations, and audio quality remain unverified.
+We captured these screens on a physical Android 16 (API 36) device using the version 0.1.0 debug APK from [Android CI run 45909966972](https://github.com/JDRodriguezr/GenteHablando/actions/runs/45909966972), source `5c18af07db0b6eef27db8ea50b1bf52038b8b331`. We checked launch, academy and lesson navigation, the sign-in screen, and back navigation. We did not authenticate, start a conversation, or submit a quiz.
+
+| Signed-out Home | Academy |
+| --- | --- |
+| <img src="docs/screenshots/home.png" width="240" alt="Signed-out Home with speaker and listener roles and an academy entry"> | <img src="docs/screenshots/academy.png" width="240" alt="Academy listing the three bundled lessons with initial scores"> |
+
+| Listening lesson | Sign-in screen |
+| --- | --- |
+| <img src="docs/screenshots/lesson.png" width="240" alt="Active-listening reading material and the quiz entry button"> | <img src="docs/screenshots/sign-in.png" width="240" alt="Sign-in screen with the Google continuation button, before authentication"> |
 
 ## Stack
 
@@ -38,8 +46,6 @@ Runtime screenshots are not available. Include only genuine captures from an aut
 | Advertising | Google Mobile Ads |
 | Local persistence | SharedPreferences for identity, course scores, and cooldowns |
 
-The source review targets `56145e0945c21dffb0d008157f3d750b7f978e76`. A successful baseline build and toolchain compatibility remain unverified. Version metadata alone does not establish a stable release.
-
 ## Setup
 
 Start from `develop`:
@@ -49,11 +55,21 @@ git clone --branch develop https://github.com/JDRodriguezr/GenteHablando.git
 Set-Location GenteHablando
 ```
 
-Open the checkout in Android Studio. Before building or running it, verify the required JDK, Android SDK, Gradle, and Android plugin versions against the checked-out build configuration in an approved CI environment. Exact toolchain prerequisites remain unverified; do not assume compatible versions.
+Open the checkout in Android Studio. Actions passed debug unit tests, lint and APK generation with this configuration:
+
+| Component | Checked configuration |
+| --- | --- |
+| Java | JDK 17 launcher; Java 25 Gradle daemon criteria |
+| Gradle | 9.6.0, through the checked-in wrapper |
+| Android | AGP 8.8.0, SDK 35, Build Tools 35.0.0; minimum API 24 |
+| Kotlin | 2.1.20; Java/Kotlin compilation target 17 |
+| Compose | BOM 2026.02.01 |
+
+The daemon criteria can override `JAVA_HOME`. Keep the wrapper, checksum, daemon criteria and version catalog together; diagnose actual CI failures before changing versions. See [CONTRIBUTING.md](CONTRIBUTING.md) for the runner command and artifact-download instructions.
 
 Use an owner-approved test environment for Firebase and Agora configuration. Google sign-in requires the matching Firebase/OAuth client configuration and the approved build's signing registration. Do not copy tokens, account details, signing secrets, or runtime logs into documentation.
 
-Run builds and automated tests in the approved CI environment rather than through local Gradle tests. Use an authorized physical Android device for runtime checks; do not use Android emulators for this workflow. Obtain separate approval before production writes or deployment. A successful build alone does not verify Firebase rules, matchmaking, moderation, or voice isolation.
+Run builds and automated tests in Actions rather than through local Gradle tests. Use an authorized physical Android device for runtime checks; do not use Android emulators for this workflow. Startup initializes Firebase and Google Mobile Ads and can contact their services. Obtain separate approval before production writes or deployment. A successful build alone does not verify Firebase rules, matchmaking, moderation, or voice isolation.
 
 ## Architecture
 
@@ -77,14 +93,20 @@ ui/screens + ui/navigation
 
 `RepositoryModule` binds the real Firebase implementations and the Agora adapter. The source also includes fake chat and matchmaking implementations, but the current bindings do not provide an isolated demo mode.
 
-The matchmaking contract currently imports a ViewModel UI state, so that boundary still needs correction. Keep the single-module structure while addressing the concrete defects in the [architecture review](docs/architecture.md).
+The matchmaking contract currently imports a ViewModel UI state, so that boundary still needs correction. Keep the single-module structure while addressing the 13 prioritized findings in the [architecture review](docs/architecture.md), which anchors its source observations to `56145e0945c21dffb0d008157f3d750b7f978e76`. Start with voice-room isolation, real identity handling and transactional matchmaking.
 
 ## Contribution workflow
 
-Use `feature/*` branches based on `develop`. Keep commits and PR descriptions short and in English, and preserve the Spanish product localization.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md). Use `feature/*` branches based on `develop`, with PRs targeting `develop`. Prepare releases on `release/x.y.z` branches targeting `main`, then synchronize `main` back to `develop`. Keep commits and PR descriptions short and in English, and preserve the Spanish product localization.
 
-Submit a PR to `develop`; merging, publishing tags or releases, and deploying require separate approval.
+Merging, publishing tags or releases, and deploying require approval for that work. GitFlow checks validate PR branch relationships; an administrator must enable branch protection to restrict direct pushes and require reviews. The [administrator checklist](CONTRIBUTING.md#administrator-setup) does not imply that those protections are active.
+
+## Release status
+
+Version 0.1.0 is an experimental source preview. See the [release history](https://github.com/JDRodriguezr/GenteHablando/releases). CI debug APKs are test artifacts, not production-signed distributions. Correct the shared voice-channel path before testing private conversations.
 
 ## Verification limits
 
-The architecture review records source observations and proposed acceptance criteria, not passing checks. Baseline build compatibility, end-to-end conversations, accessibility conformance, and performance remain unverified. Do not treat the prototype as a stable release or evidence of operational readiness.
+Actions passed the GitFlow policy, Android debug unit tests, lint and APK generation for the checked preview. The Android unit suite currently contains only a template arithmetic test. Physical-device checks cover the signed-out screens and navigation described above; the architecture report contains proposed acceptance checks, not completed integration tests.
+
+Google sign-in, Firebase rules, end-to-end conversations, feedback retention, voice isolation, accessibility conformance and performance remain unverified. Do not treat this prototype as a stable release or evidence of operational readiness.
