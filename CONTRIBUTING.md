@@ -67,13 +67,16 @@ The Android runner requests Temurin JDK 17, Android platform 35 and Build Tools
 [Google's AGP 8.8 compatibility table](https://developer.android.com/build/releases/agp-8-8-0-release-notes)
 lists Gradle 8.10.2, JDK 17 and a maximum supported API level of 35.
 
-**Unverified inherited build configuration:** the current wrapper requests
+**CI-tested build configuration:** the current wrapper requests
 Gradle 9.6.0, daemon criteria request JDK 25, and the catalog uses Kotlin 2.1.20
 and Compose BOM 2026.02.01. Daemon criteria can override `JAVA_HOME`.
-Do not call this combination compatible or claim a successful build without
-an actual Actions result. Diagnose the first failing CI run and change only
-the necessary versions, preferring the supported AGP 8.8 toolchain over an
-AGP-major migration. Verify any replacement distribution checksum against
+[Android run 45908440941](https://github.com/JDRodriguezr/GenteHablando/actions/runs/45908440941)
+passed debug unit tests, lint and APK generation at
+`52dcd5425946b1d5ce61cf38e18b57452473143d`, using a JDK 17 launcher and the
+checked-in Java 25 daemon criteria. This records the tested runner, not a
+guarantee for other environments. Diagnose actual failures before changing
+versions; the first failure was a Compose resource-access lint error, not a
+toolchain failure. Verify any replacement distribution checksum against
 Gradle's official checksum before committing it.
 
 Do not run local Gradle builds/tests or install local build tools for this
