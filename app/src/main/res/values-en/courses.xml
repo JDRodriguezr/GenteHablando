@@ -1,0 +1,253 @@
+<resources>
+    <string name="course_1_title">The power of active silence</string>
+    <string name="course_1_description">Learn to listen without rushing to respond.</string>
+    <string name="course_1_content">When someone tells us about a problem, our minds often start looking for a solution or advice to offer. This comes from good intentions, but it can invalidate the other person\'s feelings.\n\nActive silence means listening with your full attention on understanding how the other person feels, without preparing your response. When you pause after they finish speaking, you give them space to process their emotions. Often, they find their own solution.\n\nRemember: You are here to support someone, not to fix their life.</string>
+    <string name="course_1_q1_question">What is active silence?</string>
+    <string-array name="course_1_q1_options">
+        <item>Listening to understand without interrupting the person</item>
+        <item>Nodding all the time while the other person speaks</item>
+        <item>Waiting for your turn to share a similar story of your own</item>
+        <item>Agreeing with absolutely everything the person says</item>
+    </string-array>
+    <string name="course_1_q1_explanation">The key is the intention behind your listening. Focus on the other person, not on what you will say next.</string>
+    <string name="course_1_q2_question">Why should we avoid giving advice right away?</string>
+    <string-array name="course_1_q2_options">
+        <item>It invalidates or minimizes the other person\'s feelings</item>
+        <item>Because the advice we give sometimes does not work</item>
+        <item>Because that is a professional\'s responsibility</item>
+        <item>To avoid responsibility for what the other person does</item>
+    </string-array>
+    <string name="course_1_q2_explanation">Jumping to a solution tells the other person that their emotions are a problem to get rid of quickly, rather than something worth listening to.</string>
+    <string name="course_1_q3_question">What happens when you pause after the other person speaks?</string>
+    <string-array name="course_1_q3_options">
+        <item>You give them space to process their own emotions</item>
+        <item>The person feels uncomfortable and stops talking</item>
+        <item>The silence makes the conversation boring</item>
+        <item>It gives you time to think of an excuse</item>
+    </string-array>
+    <string name="course_1_q3_explanation">Silence lets ideas settle. Sometimes a person just needs to hear themselves to reach a conclusion.</string>
+    <string name="course_1_q4_question">What is our main role as listeners?</string>
+    <string-array name="course_1_q4_options">
+        <item>To offer support and a safe space</item>
+        <item>To stop the person from making bad decisions</item>
+        <item>To find out who is to blame for the situation</item>
+        <item>To explain what I would do in their place</item>
+    </string-array>
+    <string name="course_1_q4_explanation">Remember that you are not a therapist or a problem solver. You are a source of support during a difficult moment.</string>
+    <string name="course_1_q5_question">How does someone feel if we interrupt them to offer a solution?</string>
+    <string-array name="course_1_q5_options">
+        <item>Misunderstood, as though their problem has been minimized</item>
+        <item>Relieved that they no longer have to think about it</item>
+        <item>Grateful that we know what they should do</item>
+        <item>Inspired to start solving everything</item>
+    </string-array>
+    <string name="course_1_q5_explanation">Interrupting conveys impatience. It makes people feel that what they were expressing was not important enough to hear in full.</string>
+    <string name="course_1_q6_question">What does active silence really communicate?</string>
+    <string-array name="course_1_q6_options">
+        <item>Empathy and deep respect for the other person\'s space</item>
+        <item>That we know absolutely nothing about the subject</item>
+        <item>That we are judging what they just said</item>
+        <item>That the conversation should already be over</item>
+    </string-array>
+    <string name="course_1_q6_explanation">Used well, silence says: \'I am here, I am not judging you, and I have all the time in the world for you.\'</string>
+    <string name="course_1_q7_question">If the person pauses for a long time while crying, what should you do?</string>
+    <string-array name="course_1_q7_options">
+        <item>Allow the silence and be there for them without rushing</item>
+        <item>Ask right away: \'Exactly why are you crying?\'</item>
+        <item>Try making a joke to break the ice</item>
+        <item>Tell them \'Don\'t cry\' so they feel better</item>
+    </string-array>
+    <string name="course_1_q7_explanation">Strong emotions need space. Pushing someone to speak right away can make them close off emotionally.</string>
+    <string name="course_1_q8_question">What is a very common mistake when listening to someone?</string>
+    <string-array name="course_1_q8_options">
+        <item>Thinking about what we are going to say in response</item>
+        <item>Staring and nodding all the time</item>
+        <item>Leaving silences longer than three seconds</item>
+        <item>Asking questions to clarify the context</item>
+    </string-array>
+    <string name="course_1_q8_explanation">Our egos often take over. We want to sound smart or useful and lose focus on what the other person is actually saying.</string>
+    <string name="course_1_q9_question">Does active silence mean ignoring the person?</string>
+    <string-array name="course_1_q9_options">
+        <item>No, it means paying full attention to each word</item>
+        <item>Yes, it means letting them talk alone until they get tired</item>
+        <item>It means doing something else while they vent</item>
+        <item>It means saying absolutely nothing throughout the chat</item>
+    </string-array>
+    <string name="course_1_q9_explanation" formatted="false">It is an act of full participation. Your mind is 100% focused on taking in their words and tone.</string>
+    <string name="course_1_q10_question">In most cases, who should find the solution to the problem?</string>
+    <string-array name="course_1_q10_options">
+        <item>The person themselves, by processing their emotions aloud</item>
+        <item>The listener, because they see the situation from outside</item>
+        <item>An expert the person should consult</item>
+        <item>Whoever caused the problem in the first place</item>
+    </string-array>
+    <string name="course_1_q10_explanation">No one knows a person\'s life better than they do. The listener\'s job is to be a mirror that helps them see their own answer.</string>
+
+    <string name="course_2_title">Name your emotion</string>
+    <string name="course_2_description">Put a name to what you feel before expressing it.</string>
+    <string name="course_2_content">When we feel overwhelmed, it is easy to say \'everything is wrong\' or \'I feel terrible.\' However, our brains process emotions better when we label them.\n\nBefore you start writing in the chat, ask yourself: Is what I feel in my chest sadness, frustration, fear, or disappointment?\n\nTelling your listener \'I feel very frustrated because...\' opens a direct path to empathy. It lets the other person understand your inner world without having to guess.</string>
+    <string name="course_2_q1_question">Why is naming your emotion important?</string>
+    <string-array name="course_2_q1_options">
+        <item>It helps the brain process it and reduces the intensity of the moment</item>
+        <item>It shows that you have an extensive emotional vocabulary</item>
+        <item>It forces the other person to take your problem seriously</item>
+        <item>It is the first step toward finding someone to blame</item>
+    </string-array>
+    <string name="course_2_q1_explanation">Looking for the exact word to describe your feeling activates the logical part of your brain and calms the impulsive part.</string>
+    <string name="course_2_q2_question">Saying \'Everything is wrong\' is an example of...</string>
+    <string-array name="course_2_q2_options">
+        <item>An overwhelmed expression that does not label specific emotions</item>
+        <item>A realistic diagnosis during a deep crisis</item>
+        <item>The quickest way to get someone to listen to us</item>
+        <item>An advanced technique for emotional release</item>
+    </string-array>
+    <string name="course_2_q2_explanation">It is a generalization that gives neither your brain nor the listener clues about the real source of the pain.</string>
+    <string name="course_2_q3_question">What effect does using the phrase \'I feel...\' have?</string>
+    <string-array name="course_2_q3_options">
+        <item>It takes responsibility and avoids making the other person defensive</item>
+        <item>It makes the listener feel more pity for our situation</item>
+        <item>It forces the other person to guess exactly what happened to us</item>
+        <item>It closes the conversation to prevent people from giving us advice</item>
+    </string-array>
+    <string name="course_2_q3_explanation">Speaking from the \'I\' takes responsibility for the emotion instead of making the person listening defensive.</string>
+    <string name="course_2_q4_question">What can your listener do when you label your emotion?</string>
+    <string-array name="course_2_q4_options">
+        <item>Understand your inner world without making assumptions</item>
+        <item>Find a quick, efficient solution to your problem</item>
+        <item>Know whether you are exaggerating or are right</item>
+        <item>Identify who was to blame for the situation</item>
+    </string-array>
+    <string name="course_2_q4_explanation">You remove the burden of interpreting your messages. You give them a clear map of how to approach you.</string>
+    <string name="course_2_q5_question">If you don\'t know exactly what you feel, what is the best thing to do?</string>
+    <string-array name="course_2_q5_options">
+        <item>Take a few quiet minutes to explore what is happening inside you</item>
+        <item>Close the conversation because you are not ready to talk</item>
+        <item>Ask the other person to help you guess what is happening</item>
+        <item>Insist that you are perfectly fine so you don\'t bother anyone</item>
+    </string-array>
+    <string name="course_2_q5_explanation">There is no rush. Checking in with your body and mind before speaking helps you avoid projecting confusion onto the other person.</string>
+    <string name="course_2_q6_question">What emotion often hides behind anger?</string>
+    <string-array name="course_2_q6_options">
+        <item>Deep fear, frustration, or a feeling of vulnerability</item>
+        <item>Simply a desire to hurt other people</item>
+        <item>Extreme happiness that we don\'t know how to manage</item>
+        <item>Excess energy that needs to be spent by shouting</item>
+    </string-array>
+    <string name="course_2_q6_explanation">Anger is often a secondary emotion, a protective shield that appears when we feel vulnerable or hurt underneath.</string>
+    <string name="course_2_q7_question">The phrase \'I feel ignored when you do this\' is an example of...</string>
+    <string-array name="course_2_q7_options">
+        <item>Emotional communication linked to a specific event</item>
+        <item>A subtle attack intended to make the other person feel bad</item>
+        <item>A strategy to get people to pay attention to us</item>
+        <item>A lie intended to manipulate the listener\'s empathy</item>
+    </string-array>
+    <string name="course_2_q7_explanation">It connects a real emotion with a specific event, without insults or exaggeration.</string>
+    <string name="course_2_q8_question">Why do listeners prefer you to say what you feel?</string>
+    <string-array name="course_2_q8_options">
+        <item>Because it removes the pressure of having to interpret your pain</item>
+        <item>To gather arguments and tell you whether you are wrong</item>
+        <item>Because they want to solve the problem as soon as possible</item>
+        <item>To avoid talking about their own problems</item>
+    </string-array>
+    <string name="course_2_q8_explanation">Guessing creates stress and misunderstandings. Emotional clarity makes offering support much easier.</string>
+    <string name="course_2_q9_question">Is it harmful to feel emotions such as anger or deep sadness?</string>
+    <string-array name="course_2_q9_options">
+        <item>No, all emotions are valid and important biological responses</item>
+        <item>Yes, we should always try to stay positive</item>
+        <item>It is only harmful if they last longer than five minutes</item>
+        <item>Yes, because they only cause problems for the people around us</item>
+    </string-array>
+    <string name="course_2_q9_explanation">Emotions are biological messengers. Suppressing them causes more harm than accepting and working through them.</string>
+    <string name="course_2_q10_question">What should you do before speaking in the room if you are very upset?</string>
+    <string-array name="course_2_q10_options">
+        <item>Pause to ask yourself exactly what you are feeling</item>
+        <item>Send many messages in a row so people feel your urgency</item>
+        <item>Wait until the feeling has completely passed before connecting</item>
+        <item>Warn the listener that you are angry and might insult them</item>
+    </string-array>
+    <string name="course_2_q10_explanation">Pausing for ten seconds to breathe and name the emotion helps you become reflective rather than reactive.</string>
+
+    <string name="course_3_title">Validation vs. advice</string>
+    <string name="course_3_description">Why \'don\'t worry\' does not help, and how to be empathetic.</string>
+    <string name="course_3_content">Imagine someone says: \'I am terrified about an exam.\' If you reply, \'Don\'t worry, everything will be fine,\' you minimize their fear. You indirectly tell them that their fear is silly or unnecessary.\n\nEmotional validation is the opposite. It means recognizing that the other person\'s feelings make sense in their context. A validating response would be: \'It is normal to feel scared. You have worked hard, and this matters to you.\'\n\nValidating does not mean agreeing with the person\'s actions. It means recognizing that their emotions are real and valid.</string>
+    <string name="course_3_q1_question">What does it mean to validate an emotion?</string>
+    <string-array name="course_3_q1_options">
+        <item>Recognizing and accepting that the other person\'s feelings make sense</item>
+        <item>Assuring the person that they were absolutely right about what they did</item>
+        <item>Agreeing with the actions the person took while feeling that way</item>
+        <item>Trying to solve the problem quickly so they stop feeling pain</item>
+    </string-array>
+    <string name="course_3_q1_explanation">It means giving the person the right to feel as they do without trying to correct their emotion.</string>
+    <string name="course_3_q2_question">Why is saying \'Don\'t worry\' often counterproductive?</string>
+    <string-array name="course_3_q2_options">
+        <item>It minimizes the intensity and importance of what the other person feels</item>
+        <item>Because it is a cliché that shows we are not paying attention</item>
+        <item>Because it encourages the person to worry much more about the problem</item>
+        <item>Because it shows excessive empathy that can feel suffocating</item>
+    </string-array>
+    <string name="course_3_q2_explanation">Saying this tells the person that they are exaggerating and makes them feel alone in their distress.</string>
+    <string name="course_3_q3_question">Does validating mean agreeing with the person\'s actions?</string>
+    <string-array name="course_3_q3_options">
+        <item>No, you can understand the emotion without agreeing with the action</item>
+        <item>Yes, we must agree with everything so they feel heard</item>
+        <item>Yes, it means unconditional support, even for destructive actions</item>
+        <item>No, it means ignoring the person until they calm down completely</item>
+    </string-array>
+    <string name="course_3_q3_explanation">You can understand why someone feels very angry without agreeing with them breaking something because of that anger.</string>
+    <string name="course_3_q4_question">Which of these is a genuinely validating response?</string>
+    <string-array name="course_3_q4_options">
+        <item>\'It makes so much sense that you feel this way after what happened.\'</item>
+        <item>\'If I were you, I would have gotten over this a long time ago.\'</item>
+        <item>\'It is not that bad. You should relax and think positive thoughts.\'</item>
+        <item>\'You should exercise and meditate to make the discomfort go away.\'</item>
+    </string-array>
+    <string name="course_3_q4_explanation">An empathetic response connects what happened to the person with why it is natural for it to hurt.</string>
+    <string name="course_3_q5_question">What emotional effect can unsolicited advice have?</string>
+    <string-array name="course_3_q5_options">
+        <item>It can make the person feel judged or completely misunderstood</item>
+        <item>It always solves the person\'s problem almost magically</item>
+        <item>It shows that we are very smart and know how to listen actively</item>
+        <item>It speeds up the emotional healing of the person speaking</item>
+    </string-array>
+    <string name="course_3_q5_explanation">When someone just wants to be heard, advice can feel as though you want to silence their pain and move on to something else.</string>
+    <string name="course_3_q6_question">If someone is crying deeply during the call, what is the best approach?</string>
+    <string-array name="course_3_q6_options">
+        <item>Be with them in the silence and offer support without judgment</item>
+        <item>Repeatedly tell them to stop crying because it makes us sad</item>
+        <item>Quickly change the subject to distract them from the pain</item>
+        <item>End the call because we feel uncomfortable and don\'t know how to handle it</item>
+    </string-array>
+    <string name="course_3_q6_explanation">Holding back tears suppresses emotions. One of the most healing things you can offer is a space where it is okay to break down.</string>
+    <string name="course_3_q7_question">What exactly is an \'open question\' in active listening?</string>
+    <string-array name="course_3_q7_options">
+        <item>One that invites reflection, such as \'How did that make you feel?\'</item>
+        <item>A direct question that can only be answered with \'Yes\' or \'No\'</item>
+        <item>A question that diverts attention, such as talking about today\'s weather</item>
+        <item>Any question that lets us get gossip about the situation</item>
+    </string-array>
+    <string name="course_3_q7_explanation">Open questions cannot be answered with a single word. They ask the person to look inward and develop their story.</string>
+    <string name="course_3_q8_question">Why is the phrase \'If I were you, I would...\' not very useful?</string>
+    <string-array name="course_3_q8_options">
+        <item>It wrongly assumes that your context and tools are the same as theirs</item>
+        <item>Because the person does not care at all about your life or experience</item>
+        <item>Because talking about yourself is very rude in any context</item>
+        <item>Because explaining the story takes too long and the person will get bored</item>
+    </string-array>
+    <string name="course_3_q8_explanation">Each person has different pain tolerance, resources, and fears. What is easy for you may be impossible for the other person right now.</string>
+    <string name="course_3_q9_question">What does empathy really achieve in a conversation?</string>
+    <string-array name="course_3_q9_options">
+        <item>It creates a safe bridge of deep human connection between both people</item>
+        <item>It creates a feeling of pity for the other person\'s situation</item>
+        <item>It lets the person isolate themselves emotionally to heal alone</item>
+        <item>It solves technical or mathematical problems the person could not solve</item>
+    </string-array>
+    <string name="course_3_q9_explanation">Empathy means going down into the same dark pit as the other person and saying: \'You are not alone here.\' It does not mean forcing them out of the pit.</string>
+    <string name="course_3_q10_question">Which of the following phrases completely AVOIDS emotional validation?</string>
+    <string-array name="course_3_q10_options">
+        <item>\'Many other people in the world are much worse off than you.\'</item>
+        <item>\'It is completely understandable that you feel so angry about that.\'</item>
+        <item>\'It really hurts to see you going through such a difficult situation.\'</item>
+        <item>\'I don\'t know what to say right now, but I am here to listen.\'</item>
+    </string-array>
+    <string name="course_3_q10_explanation">Comparing one person\'s pain with someone else\'s is one of the most harmful forms of invalidation. Pain is relative and personal.</string>
+</resources>

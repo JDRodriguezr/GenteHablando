@@ -19,7 +19,7 @@ import javax.inject.Inject
 sealed interface MatchmakingUiState {
     object Idle : MatchmakingUiState                         // Reposo / No ha empezado
     data class Searching(val secondsWaiting: Int) : MatchmakingUiState // Buscando activamente
-    data class Matched(val partnerAlias: String, val roomId: String) : MatchmakingUiState // ¡Pareja encontrada!
+    data class Matched(val partnerRole: UserRole, val roomId: String, val isDemo: Boolean = false) : MatchmakingUiState
 }
 
 @HiltViewModel
@@ -40,7 +40,7 @@ class MatchmakingViewModel @Inject constructor(
 
         return when (val result = authRepository.signInAnonymously()) {
             is Resource.Success -> result.data
-            else -> "user_" + System.currentTimeMillis()
+            else -> "user_" + System.currentTimeMillis() // i18n: technical Fallback user-ID prefix; not display content.
         }
     }
 

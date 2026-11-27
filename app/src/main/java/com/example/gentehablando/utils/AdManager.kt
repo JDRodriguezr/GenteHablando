@@ -25,7 +25,7 @@ class AdManager @Inject constructor(
     private val AD_COOLDOWN_MS: Long = 5 * 60 * 1000L 
     
     // Unidad de Anuncio de PRUEBA para Interstitial en Android
-    private val TEST_AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
+    private val TEST_AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712" // i18n: technical Google public test ad-unit ID; SDK configuration.
 
     init {
         loadAd()
@@ -45,13 +45,13 @@ class AdManager @Inject constructor(
             adRequest,
             object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
-                    Log.d("AdManager", "Error cargando anuncio: ${adError.message}")
+                    Log.d("AdManager", "Error cargando anuncio: ${adError.message}") // i18n: technical Diagnostic log tag/message; never displayed.
                     interstitialAd = null
                     isAdLoading = false
                 }
 
                 override fun onAdLoaded(ad: InterstitialAd) {
-                    Log.d("AdManager", "Anuncio cargado en memoria exitosamente.")
+                    Log.d("AdManager", "Anuncio cargado en memoria exitosamente.") // i18n: technical Diagnostic log tag/message; never displayed.
                     interstitialAd = ad
                     isAdLoading = false
                 }

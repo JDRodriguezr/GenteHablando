@@ -20,6 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gentehablando.domain.model.Course
 import com.example.gentehablando.viewmodel.CourseViewModel
+import androidx.compose.ui.res.stringResource
+import com.example.gentehablando.R
+import com.example.gentehablando.ui.text.textResources
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,10 +43,10 @@ fun GuidesScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Academia") },
+                title = { Text(stringResource(R.string.academy_title)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -58,14 +61,14 @@ fun GuidesScreen(
             Spacer(modifier = Modifier.height(16.dp))
             
             Text(
-                text = "Cursos disponibles",
+                text = stringResource(R.string.available_courses),
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Mejora tus habilidades de comunicación y empatía.",
+                text = stringResource(R.string.courses_summary),
                 fontSize = 15.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -100,6 +103,7 @@ private fun CourseCard(
 ) {
     val isCompleted = score != null && score >= 4
     val isPerfect = score == 5
+    val textResources = course.textResources()
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -125,21 +129,21 @@ private fun CourseCard(
                 if (isPerfect) {
                     Icon(
                         imageVector = Icons.Default.Star,
-                        contentDescription = "Perfecto",
+                        contentDescription = stringResource(R.string.perfect),
                         tint = Color(0xFFFFC107), // Dorado para el 5/5
                         modifier = Modifier.size(36.dp)
                     )
                 } else if (isCompleted) {
                     Icon(
                         imageVector = Icons.Default.CheckCircle,
-                        contentDescription = "Completado",
+                        contentDescription = stringResource(R.string.completed),
                         tint = Color(0xFF4CAF50),
                         modifier = Modifier.size(32.dp)
                     )
                 } else {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.MenuBook,
-                        contentDescription = "Empezar",
+                        contentDescription = stringResource(R.string.start),
                         tint = MaterialTheme.colorScheme.secondary,
                         modifier = Modifier.size(32.dp)
                     )
@@ -151,14 +155,14 @@ private fun CourseCard(
             // Textos descriptivos
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = course.title,
+                    text = stringResource(textResources.title),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     color = if (isCompleted) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSecondaryContainer
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = course.description,
+                    text = stringResource(textResources.description),
                     fontSize = 13.sp,
                     color = if (isCompleted) MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                     else MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.8f)
@@ -168,7 +172,7 @@ private fun CourseCard(
             Spacer(modifier = Modifier.width(12.dp))
             
             // Indicador de Progreso (X/5)
-            val scoreText = if (score != null && score > 0) "$score/5" else "0/5"
+            val scoreText = stringResource(R.string.score_fraction, score?.coerceAtLeast(0) ?: 0, 5)
             val scoreColor = when {
                 isPerfect -> Color(0xFFFFC107) // Dorado TOC
                 isCompleted -> Color(0xFF4CAF50) // Verde normal

@@ -3,6 +3,7 @@ package com.example.gentehablando.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gentehablando.domain.model.Resource
+import com.example.gentehablando.domain.model.AppError
 import com.example.gentehablando.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,8 +41,8 @@ class AuthViewModel @Inject constructor(
         }
     }
     
-    fun setError(msg: String) {
-        _loginState.value = Resource.Error(msg)
+    fun setError(reason: AppError) {
+        _loginState.value = Resource.Error(reason)
     }
 
     fun signOut() {

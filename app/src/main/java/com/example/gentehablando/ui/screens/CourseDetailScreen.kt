@@ -17,13 +17,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gentehablando.viewmodel.CourseViewModel
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
+import com.example.gentehablando.R
+import com.example.gentehablando.domain.model.QuizQuestion
+import com.example.gentehablando.ui.text.textResources
 
 data class QuizQuestionState(
-    val question: String,
-    val options: List<String>,
-    val correctOptionIndex: Int,
-    var selectedIndex: Int = -1
-)
+    val question: QuizQuestion,
+    val optionIndices: List<Int>,
+    val selectedIndex: Int = -1
+) {
+    val isCorrect: Boolean
+        get() = optionIndices.getOrNull(selectedIndex) == question.correctOptionIndex
+}
+
+private enum class CourseMode { READING, QUIZ, COOLDOWN, PASSED, QUIZ_RESULTS }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,6 +51,7 @@ fun CourseDetailScreen(
         onNavigateBack()
         return
     }
+    val textResources = course.textResources()
 
     // --- LÓGICA DE COOLDOWN Y ESTADO DEL QUIZ ---
     val cooldownEndTime = remember { mutableLongStateOf(viewModel.getCooldownEndTime(courseId)) }
@@ -50,9 +61,9 @@ fun CourseDetailScreen(
     var currentMode by remember { 
         mutableStateOf(
             when {
-                cooldownEndTime.longValue > System.currentTimeMillis() -> "COOLDOWN"
-                isCompleted -> "PASSED"
-                else -> "READING"
+                cooldownEndTime.longValue > System.currentTimeMillis() -> CourseMode.COOLDOWN
+                isCompleted -> CourseMode.PASSED
+                else -> CourseMode.READING
             }
         ) 
     }
@@ -63,8 +74,8 @@ fun CourseDetailScreen(
             timeRemaining = cooldownEndTime.longValue - System.currentTimeMillis()
             kotlinx.coroutines.delay(1000L)
         }
-        if (currentMode == "COOLDOWN" && timeRemaining <= 0) {
-            currentMode = "READING" // Se acabó el castigo
+        if (currentMode == CourseMode.COOLDOWN && timeRemaining <= 0) {
+            currentMode = CourseMode.READING // Se acabó el castigo
         }
     }
 
@@ -75,12 +86,10 @@ fun CourseDetailScreen(
     fun generateQuiz() {
         val selectedQuestions = course.questionsPool.shuffled().take(5)
         val session = selectedQuestions.map { q ->
-            val shuffledOptions = q.options.shuffled()
-            val correctIdx = shuffledOptions.indexOf(q.correctAnswer)
-            QuizQuestionState(q.question, shuffledOptions, correctIdx, -1)
+            QuizQuestionState(q, (0 until q.optionCount).shuffled())
         }
         quizSession = session
-        currentMode = "QUIZ"
+        currentMode = CourseMode.QUIZ
         showQuizError = false
     }
 
@@ -91,7 +100,7 @@ fun CourseDetailScreen(
                 title = { }, // Título vacío para que no persiga en el scroll y no se repita
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -109,7 +118,7 @@ fun CourseDetailScreen(
         ) {
             // Título
             Text(
-                text = course.title,
+                text = stringResource(textResources.title),
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
@@ -117,7 +126,7 @@ fun CourseDetailScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             when (currentMode) {
-                "PASSED" -> {
+                CourseMode.PASSED -> {
                     // MODO: CURSO COMPLETADO
                     Card(
                         modifier = Modifier.fillMaxWidth(),
@@ -127,24 +136,24 @@ fun CourseDetailScreen(
                             modifier = Modifier.fillMaxWidth().padding(24.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Icon(Icons.Default.CheckCircle, contentDescription = "Completado", tint = Color(0xFF4CAF50), modifier = Modifier.size(64.dp))
+                            Icon(Icons.Default.CheckCircle, contentDescription = stringResource(R.string.completed), tint = Color(0xFF4CAF50), modifier = Modifier.size(64.dp))
                             Spacer(modifier = Modifier.height(16.dp))
-                            Text("¡Lección Dominada!", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
+                            Text(stringResource(R.string.lesson_mastered), fontWeight = FontWeight.Bold, fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
                             Spacer(modifier = Modifier.height(8.dp))
-                            Text("Has pasado el test de conocimiento exitosamente.", textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(stringResource(R.string.lesson_passed), textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             Spacer(modifier = Modifier.height(24.dp))
                             Button(onClick = onNavigateBack, modifier = Modifier.fillMaxWidth().height(50.dp)) {
-                                Text("Volver a la Academia")
+                                Text(stringResource(R.string.back_to_academy))
                             }
                         }
                     }
                 }
 
-                "COOLDOWN" -> {
+                CourseMode.COOLDOWN -> {
                     // MODO: CASTIGO 10 MINUTOS
                     val mins = (timeRemaining / 1000) / 60
                     val secs = (timeRemaining / 1000) % 60
-                    val timeString = String.format("%02d:%02d", mins, secs)
+                    val timeString = stringResource(R.string.countdown_time, mins, secs)
 
                     Card(
                         modifier = Modifier.fillMaxWidth(),
@@ -154,46 +163,48 @@ fun CourseDetailScreen(
                             modifier = Modifier.fillMaxWidth().padding(24.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text("Repasa la lección", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = MaterialTheme.colorScheme.error)
+                            Text(stringResource(R.string.review_lesson), fontWeight = FontWeight.Bold, fontSize = 20.sp, color = MaterialTheme.colorScheme.error)
                             Spacer(modifier = Modifier.height(8.dp))
-                            Text("Algunas respuestas no fueron correctas. Tómate un tiempo para releer el contenido de la guía y reflexionar.", textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = MaterialTheme.colorScheme.onErrorContainer)
+                            Text(stringResource(R.string.review_lesson_instructions), textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = MaterialTheme.colorScheme.onErrorContainer)
                             Spacer(modifier = Modifier.height(16.dp))
                             Text(timeString, fontWeight = FontWeight.Bold, fontSize = 32.sp, color = MaterialTheme.colorScheme.error)
                         }
                     }
                     
                     Spacer(modifier = Modifier.height(24.dp))
-                    Text(course.content, fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, lineHeight = 24.sp)
+                    Text(stringResource(textResources.content), fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, lineHeight = 24.sp)
                 }
 
-                "READING" -> {
+                CourseMode.READING -> {
                     // MODO: LECTURA DEL CONTENIDO
-                    Text(course.content, fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, lineHeight = 24.sp)
+                    Text(stringResource(textResources.content), fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, lineHeight = 24.sp)
                     Spacer(modifier = Modifier.height(32.dp))
                     Button(
                         onClick = { generateQuiz() },
                         modifier = Modifier.fillMaxWidth().height(54.dp),
                         shape = RoundedCornerShape(14.dp)
                     ) {
-                        Text("Iniciar prueba de conocimiento", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.start_quiz), fontSize = 16.sp, fontWeight = FontWeight.Bold)
                     }
                 }
 
-                "QUIZ" -> {
+                CourseMode.QUIZ -> {
                     // MODO: EVALUACIÓN (5 Preguntas)
-                    Text("Responde las 5 preguntas para completar la lección.", color = MaterialTheme.colorScheme.secondary, fontWeight = FontWeight.Medium)
+                    Text(pluralStringResource(R.plurals.quiz_instructions, 5, 5), color = MaterialTheme.colorScheme.secondary, fontWeight = FontWeight.Medium)
                     Spacer(modifier = Modifier.height(24.dp))
 
                     quizSession?.forEachIndexed { questionIndex, qState ->
+                        val questionResources = textResources.questions[qState.question.id - 1]
+                        val optionTexts = stringArrayResource(questionResources.options)
                         Card(
                             modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
-                                Text("${questionIndex + 1}. ${qState.question}", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                                Text(stringResource(R.string.numbered_question, questionIndex + 1, stringResource(questionResources.question)), fontWeight = FontWeight.Bold, fontSize = 15.sp)
                                 Spacer(modifier = Modifier.height(12.dp))
 
-                                qState.options.forEachIndexed { optIndex, optionText ->
+                                qState.optionIndices.forEachIndexed { optIndex, originalIndex ->
                                     Row(
                                         modifier = Modifier.fillMaxWidth().clickable { 
                                             // Actualizamos el estado interno
@@ -212,7 +223,7 @@ fun CourseDetailScreen(
                                             }
                                         )
                                         Spacer(modifier = Modifier.width(8.dp))
-                                        Text(optionText, fontSize = 14.sp)
+                                        Text(optionTexts[originalIndex], fontSize = 14.sp)
                                     }
                                 }
                             }
@@ -222,21 +233,21 @@ fun CourseDetailScreen(
                     val allAnswered = quizSession?.all { it.selectedIndex != -1 } == true
 
                     Button(
-                        onClick = { currentMode = "QUIZ_RESULTS" },
+                        onClick = { currentMode = CourseMode.QUIZ_RESULTS },
                         enabled = allAnswered,
                         modifier = Modifier.fillMaxWidth().height(54.dp),
                         shape = RoundedCornerShape(14.dp)
                     ) {
-                        Text("Enviar respuestas", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.submit_answers), fontSize = 16.sp, fontWeight = FontWeight.Bold)
                     }
                 }
 
-                "QUIZ_RESULTS" -> {
-                    val correctCount = quizSession?.count { it.selectedIndex == it.correctOptionIndex } ?: 0
+                CourseMode.QUIZ_RESULTS -> {
+                    val correctCount = quizSession?.count { it.isCorrect } ?: 0
                     val passed = correctCount >= 4
                     
                     Text(
-                        text = "Resultado: $correctCount/5",
+                        text = stringResource(R.string.quiz_result, correctCount, 5),
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
                         color = if (passed) Color(0xFF4CAF50) else MaterialTheme.colorScheme.error,
@@ -245,7 +256,9 @@ fun CourseDetailScreen(
                     Spacer(modifier = Modifier.height(24.dp))
 
                     quizSession?.forEachIndexed { questionIndex, qState ->
-                        val isCorrect = qState.selectedIndex == qState.correctOptionIndex
+                        val isCorrect = qState.isCorrect
+                        val questionResources = textResources.questions[qState.question.id - 1]
+                        val optionTexts = stringArrayResource(questionResources.options)
                         
                         Card(
                             modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
@@ -256,12 +269,12 @@ fun CourseDetailScreen(
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.1f))
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
-                                Text("${questionIndex + 1}. ${qState.question}", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                                Text(stringResource(R.string.numbered_question, questionIndex + 1, stringResource(questionResources.question)), fontWeight = FontWeight.Bold, fontSize = 15.sp)
                                 Spacer(modifier = Modifier.height(8.dp))
                                 
                                 // Tu respuesta
                                 Text(
-                                    text = "Tu respuesta: ${qState.options[qState.selectedIndex]}",
+                                    text = stringResource(R.string.your_answer, optionTexts[qState.optionIndices[qState.selectedIndex]]),
                                     color = if (isCorrect) Color(0xFF4CAF50) else MaterialTheme.colorScheme.error,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Medium
@@ -275,14 +288,13 @@ fun CourseDetailScreen(
                                     ) {
                                         Row(modifier = Modifier.padding(12.dp)) {
                                             Text(
-                                                text = "Pista: ",
+                                                text = stringResource(R.string.hint_label),
                                                 fontWeight = FontWeight.Bold,
                                                 color = MaterialTheme.colorScheme.error,
                                                 fontSize = 13.sp
                                             )
-                                            val explanation = course.questionsPool.find { it.question == qState.question }?.explanation ?: ""
                                             Text(
-                                                text = explanation,
+                                                text = stringResource(questionResources.explanation),
                                                 color = MaterialTheme.colorScheme.onErrorContainer,
                                                 fontSize = 13.sp
                                             )
@@ -312,12 +324,12 @@ fun CourseDetailScreen(
                             modifier = Modifier.fillMaxWidth().height(54.dp),
                             shape = RoundedCornerShape(14.dp)
                         ) {
-                            Text(if (correctCount == 4) "Reintentar para sacar 5/5 ⭐" else "Volver a la Academia", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            Text(stringResource(if (correctCount == 4) R.string.retry_perfect else R.string.back_to_academy), fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         }
                         if (correctCount == 4) {
                             Spacer(modifier = Modifier.height(12.dp))
                             OutlinedButton(onClick = onNavigateBack, modifier = Modifier.fillMaxWidth().height(48.dp)) {
-                                Text("Aceptar mi 4/5 y volver")
+                                Text(stringResource(R.string.accept_four))
                             }
                         }
                     } else {
@@ -330,13 +342,13 @@ fun CourseDetailScreen(
                         
                         Button(
                             onClick = {
-                                currentMode = "COOLDOWN"
+                                currentMode = CourseMode.COOLDOWN
                             },
                             modifier = Modifier.fillMaxWidth().height(54.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
                             shape = RoundedCornerShape(14.dp)
                         ) {
-                            Text("Entendido (Esperar 10 minutos)", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            Text(pluralStringResource(R.plurals.accept_cooldown, 10, 10), fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -346,7 +358,7 @@ fun CourseDetailScreen(
     }
     
     // Interceptar el botón "Atrás" físico/gestual para que, si está en resultados y falló, se aplique el modo cooldown antes de salir
-    androidx.activity.compose.BackHandler(enabled = currentMode == "QUIZ_RESULTS" && (quizSession?.count { it.selectedIndex == it.correctOptionIndex } ?: 0) < 4) {
-        currentMode = "COOLDOWN"
+    androidx.activity.compose.BackHandler(enabled = currentMode == CourseMode.QUIZ_RESULTS && (quizSession?.count { it.isCorrect } ?: 0) < 4) {
+        currentMode = CourseMode.COOLDOWN
     }
 }

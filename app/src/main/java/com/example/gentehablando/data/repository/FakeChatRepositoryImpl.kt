@@ -2,6 +2,8 @@ package com.example.gentehablando.data.repository
 
 import com.example.gentehablando.domain.model.ChatMessage
 import com.example.gentehablando.domain.model.Resource
+import com.example.gentehablando.domain.model.AppError
+import com.example.gentehablando.domain.model.DemoMessage
 import com.example.gentehablando.domain.repository.ChatRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -10,9 +12,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import javax.inject.Inject
 
 class FakeChatRepositoryImpl @Inject constructor() : ChatRepository {
@@ -23,24 +22,25 @@ class FakeChatRepositoryImpl @Inject constructor() : ChatRepository {
     private val scope = CoroutineScope(Dispatchers.Default)
 
     private val simulatedReplies = listOf(
-        "Te entiendo perfectamente, tómate el tiempo que necesites.",
-        "Gracias por compartir eso conmigo. ¿Desde hace cuánto te sientes así?",
-        "Es completamente comprensible que te afecte de esa manera.",
-        "Aquí sigo escuchándote con calma, continúa cuando quieras.",
-        "A veces solo ponerlo en palabras ya quita un poco de peso de encima."
+        DemoMessage.REPLY_1,
+        DemoMessage.REPLY_2,
+        DemoMessage.REPLY_3,
+        DemoMessage.REPLY_4,
+        DemoMessage.REPLY_5
     )
     private var replyIndex = 0
 
     override fun observeMessages(roomId: String, currentUserId: String): Flow<List<ChatMessage>> {
         if (messagesFlow.value.isEmpty()) {
-            val currentTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+            val currentTime = System.currentTimeMillis()
             messagesFlow.value = listOf(
                 ChatMessage(
-                    id = "system_1",
-                    text = "Conectado. Este es un espacio seguro para conversar.",
-                    senderId = "system",
+                    id = "system_1", // i18n: technical Synthetic message/sender ID; not a display label.
+                    text = "",
+                    senderId = "system", // i18n: technical Synthetic message/sender ID; not a display label.
                     isFromMe = false,
-                    timestamp = currentTime
+                    timestamp = currentTime,
+                    demoText = DemoMessage.CONNECTED
                 )
             )
         }
@@ -48,9 +48,9 @@ class FakeChatRepositoryImpl @Inject constructor() : ChatRepository {
     }
 
     override suspend fun sendMessage(roomId: String, senderId: String, text: String): Resource<Unit> {
-        if (text.isBlank()) return Resource.Error("Mensaje vacío")
+        if (text.isBlank()) return Resource.Error(AppError.EmptyMessage)
 
-        val currentTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+        val currentTime = System.currentTimeMillis()
         val userMsg = ChatMessage(
             id = System.currentTimeMillis().toString(),
             text = text.trim(),
@@ -72,10 +72,11 @@ class FakeChatRepositoryImpl @Inject constructor() : ChatRepository {
             replyIndex++
             val partnerMsg = ChatMessage(
                 id = System.currentTimeMillis().toString(),
-                text = replyText,
-                senderId = "fake_partner",
+                text = "",
+                senderId = "fake_partner", // i18n: technical Synthetic message/sender ID; not a display label.
                 isFromMe = false,
-                timestamp = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+                timestamp = System.currentTimeMillis(),
+                demoText = replyText
             )
             messagesFlow.value = messagesFlow.value + partnerMsg
         }

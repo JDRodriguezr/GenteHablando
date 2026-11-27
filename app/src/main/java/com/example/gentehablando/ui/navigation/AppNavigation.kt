@@ -21,17 +21,19 @@ import com.example.gentehablando.ui.screens.RoleGuidelinesScreen
 import com.example.gentehablando.viewmodel.ChatViewModel
 import com.example.gentehablando.viewmodel.MatchmakingViewModel
 import com.example.gentehablando.utils.AdManager
+import androidx.compose.ui.res.stringResource
+import com.example.gentehablando.R
 
 object Destinations {
-    const val HOME = "home"
-    const val GUIDELINES = "guidelines"
-    const val MATCHMAKING = "matchmaking"
-    const val CHAT = "chat"
-    const val FEEDBACK = "feedback"
-    const val LOGIN = "login"
-    const val PROFILE = "profile"
-    const val GUIDES = "guides"
-    const val COURSE_DETAIL = "course_detail"
+    const val HOME = "home" // i18n: technical Navigation route or argument key; never displayed.
+    const val GUIDELINES = "guidelines" // i18n: technical Navigation route or argument key; never displayed.
+    const val MATCHMAKING = "matchmaking" // i18n: technical Navigation route or argument key; never displayed.
+    const val CHAT = "chat" // i18n: technical Navigation route or argument key; never displayed.
+    const val FEEDBACK = "feedback" // i18n: technical Navigation route or argument key; never displayed.
+    const val LOGIN = "login" // i18n: technical Navigation route or argument key; never displayed.
+    const val PROFILE = "profile" // i18n: technical Navigation route or argument key; never displayed.
+    const val GUIDES = "guides" // i18n: technical Navigation route or argument key; never displayed.
+    const val COURSE_DETAIL = "course_detail" // i18n: technical Navigation route or argument key; never displayed.
 }
 
 @Composable
@@ -62,10 +64,10 @@ fun AppNavigation(
                 profileViewModel = profileViewModel,
                 adManager = adManager,
                 onConnectClick = { role ->
-                    navController.navigate("${Destinations.GUIDELINES}/${role.name}")
+                    navController.navigate("${Destinations.GUIDELINES}/${role.name}") // i18n: technical Navigation route or argument key; never displayed.
                 },
                 onLoginClick = { intendedRole ->
-                    navController.navigate("${Destinations.LOGIN}/${intendedRole.name}")
+                    navController.navigate("${Destinations.LOGIN}/${intendedRole.name}") // i18n: technical Navigation route or argument key; never displayed.
                 },
                 onProfileClick = {
                     navController.navigate(Destinations.PROFILE)
@@ -81,17 +83,17 @@ fun AppNavigation(
             GuidesScreen(
                 viewModel = courseViewModel,
                 onCourseClick = { courseId ->
-                    navController.navigate("${Destinations.COURSE_DETAIL}/$courseId")
+                    navController.navigate("${Destinations.COURSE_DETAIL}/$courseId") // i18n: technical Navigation route or argument key; never displayed.
                 },
                 onNavigateBack = { navController.popBackStack() }
             )
         }
 
         composable(
-            route = "${Destinations.COURSE_DETAIL}/{courseId}",
-            arguments = listOf(navArgument("courseId") { type = NavType.StringType })
+            route = "${Destinations.COURSE_DETAIL}/{courseId}", // i18n: technical Navigation route or argument key; never displayed.
+            arguments = listOf(navArgument("courseId") { type = NavType.StringType }) // i18n: technical Navigation route or argument key; never displayed.
         ) { backStackEntry ->
-            val courseId = backStackEntry.arguments?.getString("courseId") ?: return@composable
+            val courseId = backStackEntry.arguments?.getString("courseId") ?: return@composable // i18n: technical Navigation route or argument key; never displayed.
             val courseViewModel: com.example.gentehablando.viewmodel.CourseViewModel = hiltViewModel()
             
             com.example.gentehablando.ui.screens.CourseDetailScreen(
@@ -103,10 +105,10 @@ fun AppNavigation(
 
         // Login ahora recibe el parámetro del rol intencionado
         composable(
-            route = "${Destinations.LOGIN}/{role}",
-            arguments = listOf(navArgument("role") { type = NavType.StringType })
+            route = "${Destinations.LOGIN}/{role}", // i18n: technical Navigation route or argument key; never displayed.
+            arguments = listOf(navArgument("role") { type = NavType.StringType }) // i18n: technical Navigation route or argument key; never displayed.
         ) { backStackEntry ->
-            val roleParam = backStackEntry.arguments?.getString("role") ?: UserRole.SPEAKER.name
+            val roleParam = backStackEntry.arguments?.getString("role") ?: UserRole.SPEAKER.name // i18n: technical Navigation route or argument key; never displayed.
             val selectedRole = try {
                 UserRole.valueOf(roleParam)
             } catch (_: Exception) {
@@ -119,7 +121,7 @@ fun AppNavigation(
                 onLoginSuccess = {
                     // Si el login tiene éxito, lo mandamos a las recomendaciones de su rol
                     // y limpiamos el BackStack para que el botón "Atrás" no lo regrese al Login
-                    navController.navigate("${Destinations.GUIDELINES}/${selectedRole.name}") {
+                    navController.navigate("${Destinations.GUIDELINES}/${selectedRole.name}") { // i18n: technical Navigation route or argument key; never displayed.
                         popUpTo(Destinations.HOME) { inclusive = false }
                     }
                 }
@@ -127,10 +129,10 @@ fun AppNavigation(
         }
 
         composable(
-            route = "${Destinations.GUIDELINES}/{role}",
-            arguments = listOf(navArgument("role") { type = NavType.StringType })
+            route = "${Destinations.GUIDELINES}/{role}", // i18n: technical Navigation route or argument key; never displayed.
+            arguments = listOf(navArgument("role") { type = NavType.StringType }) // i18n: technical Navigation route or argument key; never displayed.
         ) { backStackEntry ->
-            val roleParam = backStackEntry.arguments?.getString("role") ?: UserRole.SPEAKER.name
+            val roleParam = backStackEntry.arguments?.getString("role") ?: UserRole.SPEAKER.name // i18n: technical Navigation route or argument key; never displayed.
             val selectedRole = try {
                 UserRole.valueOf(roleParam)
             } catch (_: Exception) {
@@ -141,7 +143,7 @@ fun AppNavigation(
                 role = selectedRole,
                 onProceedToMatchmaking = {
                     // El matchmaking arranca ÚNICAMENTE cuando se aceptan las pautas
-                    navController.navigate("${Destinations.MATCHMAKING}/${selectedRole.name}") {
+                    navController.navigate("${Destinations.MATCHMAKING}/${selectedRole.name}") { // i18n: technical Navigation route or argument key; never displayed.
                         popUpTo(Destinations.GUIDELINES) { inclusive = true }
                     }
                 }
@@ -149,10 +151,10 @@ fun AppNavigation(
         }
 
         composable(
-            route = "${Destinations.MATCHMAKING}/{role}",
-            arguments = listOf(navArgument("role") { type = NavType.StringType })
+            route = "${Destinations.MATCHMAKING}/{role}", // i18n: technical Navigation route or argument key; never displayed.
+            arguments = listOf(navArgument("role") { type = NavType.StringType }) // i18n: technical Navigation route or argument key; never displayed.
         ) { backStackEntry ->
-            val roleParam = backStackEntry.arguments?.getString("role") ?: UserRole.SPEAKER.name
+            val roleParam = backStackEntry.arguments?.getString("role") ?: UserRole.SPEAKER.name // i18n: technical Navigation route or argument key; never displayed.
             val selectedRole = try {
                 UserRole.valueOf(roleParam)
             } catch (_: Exception) {
@@ -170,7 +172,7 @@ fun AppNavigation(
                     }
                 },
                 onMatchFound = { roomId ->
-                    navController.navigate("${Destinations.CHAT}/$roomId/${selectedRole.name}") {
+                    navController.navigate("${Destinations.CHAT}/$roomId/${selectedRole.name}") { // i18n: technical Navigation route or argument key; never displayed.
                         popUpTo(Destinations.MATCHMAKING) { inclusive = true }
                     }
                 }
@@ -178,21 +180,21 @@ fun AppNavigation(
         }
 
         composable(
-            route = "${Destinations.CHAT}/{roomId}/{role}",
+            route = "${Destinations.CHAT}/{roomId}/{role}", // i18n: technical Navigation route or argument key; never displayed.
             arguments = listOf(
-                navArgument("roomId") { type = NavType.StringType },
-                navArgument("role") { type = NavType.StringType }
+                navArgument("roomId") { type = NavType.StringType }, // i18n: technical Navigation route or argument key; never displayed.
+                navArgument("role") { type = NavType.StringType } // i18n: technical Navigation route or argument key; never displayed.
             )
         ) { backStackEntry ->
-            val roomId = backStackEntry.arguments?.getString("roomId") ?: "room_temp"
-            val roleParam = backStackEntry.arguments?.getString("role") ?: UserRole.SPEAKER.name
+            val roomId = backStackEntry.arguments?.getString("roomId") ?: "room_temp" // i18n: technical Navigation route or argument key; never displayed.
+            val roleParam = backStackEntry.arguments?.getString("role") ?: UserRole.SPEAKER.name // i18n: technical Navigation route or argument key; never displayed.
             val selectedRole = try {
                 UserRole.valueOf(roleParam)
             } catch (_: Exception) {
                 UserRole.SPEAKER
             }
 
-            val partnerAlias = if (selectedRole == UserRole.SPEAKER) "Oyente" else "Hablante"
+            val partnerAlias = stringResource(if (selectedRole == UserRole.SPEAKER) R.string.listener_label else R.string.speaker_label)
             val chatViewModel: ChatViewModel = hiltViewModel()
 
             // Quitamos el LaunchedEffect de aquí, la responsabilidad del inicio 
@@ -203,7 +205,7 @@ fun AppNavigation(
                 partnerAlias = partnerAlias,
                 viewModel = chatViewModel,
                 onLeaveChat = {
-                    navController.navigate("${Destinations.FEEDBACK}/${selectedRole.name}/$roomId") {
+                    navController.navigate("${Destinations.FEEDBACK}/${selectedRole.name}/$roomId") { // i18n: technical Navigation route or argument key; never displayed.
                         popUpTo(Destinations.CHAT) { inclusive = true }
                     }
                 }
@@ -211,21 +213,21 @@ fun AppNavigation(
         }
 
         composable(
-            route = "${Destinations.FEEDBACK}/{role}/{roomId}",
+            route = "${Destinations.FEEDBACK}/{role}/{roomId}", // i18n: technical Navigation route or argument key; never displayed.
             arguments = listOf(
-                navArgument("role") { type = NavType.StringType },
-                navArgument("roomId") { type = NavType.StringType }
+                navArgument("role") { type = NavType.StringType }, // i18n: technical Navigation route or argument key; never displayed.
+                navArgument("roomId") { type = NavType.StringType } // i18n: technical Navigation route or argument key; never displayed.
             )
         ) { backStackEntry ->
-            val roleParam = backStackEntry.arguments?.getString("role") ?: UserRole.SPEAKER.name
-            val roomId = backStackEntry.arguments?.getString("roomId") ?: ""
+            val roleParam = backStackEntry.arguments?.getString("role") ?: UserRole.SPEAKER.name // i18n: technical Navigation route or argument key; never displayed.
+            val roomId = backStackEntry.arguments?.getString("roomId") ?: "" // i18n: technical Navigation route or argument key; never displayed.
             val selectedRole = try {
                 UserRole.valueOf(roleParam)
             } catch (_: Exception) {
                 UserRole.SPEAKER
             }
 
-            val partnerAlias = if (selectedRole == UserRole.SPEAKER) "Oyente" else "Hablante"
+            val partnerAlias = stringResource(if (selectedRole == UserRole.SPEAKER) R.string.listener_label else R.string.speaker_label)
             
             val feedbackViewModel: com.example.gentehablando.viewmodel.FeedbackViewModel = hiltViewModel()
 

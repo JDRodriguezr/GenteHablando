@@ -1,5 +1,201 @@
-<resources>
-    <string name="app_name">GenteHablando</string>
-    <string name="agora_app_id">d4254b769ead4207aa859a1a847db412</string>
-    <string name="default_web_client_id">838983291633-a4lr682kjjlea5v51c7h6p2elfma498t.apps.googleusercontent.com</string>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es">
+    <!-- Brand name and SDK client identifiers are not translated. -->
+    <string name="app_name" translatable="false">GenteHablando</string>
+    <string name="agora_app_id" translatable="false">d4254b769ead4207aa859a1a847db412</string>
+    <string name="default_web_client_id" translatable="false">838983291633-a4lr682kjjlea5v51c7h6p2elfma498t.apps.googleusercontent.com</string>
+
+    <string name="cancel">Cancelar</string>
+    <string name="back">Volver</string>
+    <string name="understood">Entendido</string>
+    <string name="yes_leave">Sí, salir</string>
+    <string name="send">Enviar</string>
+    <string name="number">%1$d</string>
+    <string name="score_fraction">%1$d/%2$d</string>
+    <string name="countdown_time">%1$02d:%2$02d</string>
+    <string name="profile_title">Mi Perfil</string>
+    <string name="academy_title">Academia</string>
+    <string name="listener_label">Oyente</string>
+    <string name="speaker_label">Hablante</string>
+    <string name="demo_listener_alias">Oyente_Amable_42</string>
+    <string name="demo_speaker_alias">Hablante_Sincero_07</string>
+
+    <string name="account_suspended">Cuenta suspendida</string>
+    <string name="account_suspended_message">Tu cuenta ha sido bloqueada temporalmente debido a que acumulaste múltiples reportes de conducta indebida en los últimos 30 días. Actualmente no puedes iniciar nuevas conversaciones.</string>
+    <string name="appeal_link">¿Crees que es injusto? Apelar</string>
+    <string name="appeal_title">Apelar Suspensión</string>
+    <string name="appeal_instructions">Cuéntanos qué sucedió. Nuestro equipo de soporte revisará manualmente tu caso utilizando el registro histórico de las salas reportadas.</string>
+    <string name="appeal_placeholder">Escribe tu explicación...</string>
+    <string name="appeal_sent">Apelación enviada correctamente.</string>
+    <string name="send_appeal">Enviar Apelación</string>
+    <string name="home_tagline">Conexiones humanas sin juicios.</string>
+    <string name="home_intention">¿Cuál es tu intención hoy?</string>
+    <string name="learn_to_connect">Aprende a conectar</string>
+    <string name="academy_summary">Lecciones para mejores conversaciones.</string>
+    <string name="find_match">Buscar coincidencia</string>
+    <string name="sign_in_to_continue">Iniciar sesión para continuar</string>
+    <string name="speaker_title">Quiero hablar</string>
+    <string name="speaker_description">Busco un espacio seguro para conversar y ser escuchado.</string>
+    <string name="listener_title">Quiero escuchar</string>
+    <string name="listener_description">Quiero ofrecer mi tiempo y atención para escuchar sin juzgar.</string>
+
+    <string name="login_instructions">Para mantener un espacio seguro y empático, es necesario iniciar sesión.</string>
+    <string name="signing_in">Iniciando sesión...</string>
+    <string name="continue_with_google">Continuar con Google</string>
+    <string name="error_google_empty_token">Google no devolvió un token de acceso. Vuelve a iniciar sesión.</string>
+    <string name="error_google_configuration">Error 10: Huella SHA-1 de Firebase incorrecta o faltante. Informa al responsable de la aplicación.</string>
+    <string name="error_google_cancelled">Inicio de sesión cancelado. Puedes intentarlo de nuevo.</string>
+    <string name="error_google_popup">Error en la ventana de Google: código %1$d. Vuelve a intentarlo.</string>
+    <string name="error_google_user">Google no devolvió un identificador de usuario válido. Vuelve a iniciar sesión.</string>
+    <string name="error_google_authentication">No se pudo iniciar sesión con Google. Vuelve a intentarlo.</string>
+    <string name="error_delete_account">No se pudo eliminar la cuenta. Vuelve a iniciar sesión e inténtalo de nuevo.</string>
+    <string name="error_send_message">No se pudo enviar el mensaje. Comprueba tu conexión y vuelve a intentarlo.</string>
+    <string name="error_update_typing">No se pudo actualizar el estado de escritura. Comprueba tu conexión.</string>
+    <string name="error_leave_room">No se pudo salir de la sala. Comprueba tu conexión y vuelve a intentarlo.</string>
+    <string name="error_room_not_found">Sala no encontrada. Vuelve al menú principal.</string>
+    <string name="error_not_room_member">No perteneces a esta sala. Vuelve al menú principal.</string>
+    <string name="error_invalid_partner">No se pudo identificar a tu compañero. Vuelve al menú principal.</string>
+    <string name="error_send_feedback">No se pudo enviar el feedback al servidor. Comprueba tu conexión y vuelve a intentarlo.</string>
+    <string name="error_send_appeal">No se pudo enviar la apelación. Comprueba tu conexión y vuelve a intentarlo.</string>
+    <string name="error_not_authenticated">Sesión expirada o usuario no autenticado. Vuelve a iniciar sesión.</string>
+    <string name="error_empty_message">Escribe un mensaje antes de enviarlo.</string>
+
+    <string name="before_speaking">Antes de hablar...</string>
+    <string name="before_listening">Antes de escuchar...</string>
+    <string name="speaker_guidelines_intro">Al otro lado hay una persona voluntaria dispuesta a conversar. Ten en cuenta estas pautas:</string>
+    <string name="listener_guidelines_intro">Al otro lado hay una persona buscando un espacio seguro para conversar. Ten en cuenta estas pautas:</string>
+    <string name="speaker_guideline_1_title">No es terapia profesional</string>
+    <string name="speaker_guideline_1_body">La persona viene a acompañarte, no a resolver tus problemas ni a dar diagnósticos. El alivio está en la conexión humana.</string>
+    <string name="speaker_guideline_2_title">Toda emoción es bienvenida, la agresión no</string>
+    <string name="speaker_guideline_2_body">Puedes sentir rabia, tristeza o frustración. Vuelca tu sentir sobre tu historia, sin atacar a quien te escucha.</string>
+    <string name="speaker_guideline_3_title">A tu propio ritmo</string>
+    <string name="speaker_guideline_3_body">No tienes que comprimir todo en un solo mensaje. Tómate pausas para respirar y expresarte como necesites.</string>
+    <string name="speaker_guideline_4_title">Cuidado mutuo</string>
+    <string name="speaker_guideline_4_body">Si sientes que la charla no te hace bien o cruza límites, tienes derecho a terminar la sesión con respeto en cualquier momento.</string>
+    <string name="listener_guideline_1_title">Escucha activa y sin juzgar</string>
+    <string name="listener_guideline_1_body">Tu presencia y atención libre de prejuicios es el mayor acompañamiento. Permite que la conversación fluya.</string>
+    <string name="listener_guideline_2_title">Evita dar consejos no solicitados</string>
+    <string name="listener_guideline_2_body">El objetivo no es solucionar la vida de la otra persona, sino brindarle un espacio empático y libre de presión.</string>
+    <string name="listener_guideline_3_title">Respeto e intimidad anónima</string>
+    <string name="listener_guideline_3_body">Todo lo compartido es confidencial. Mantén la amabilidad y respeta el anonimato de la sesión.</string>
+    <string name="listener_guideline_4_title">Cuida tu propio bienestar</string>
+    <string name="listener_guideline_4_body">Si la conversación sobrepasa tus límites emocionales o resulta incómoda, puedes terminarla con amabilidad.</string>
+    <string name="legacy_speaker_intro">Al otro lado hay una persona voluntaria dispuesta a escucharte. Ten en cuenta estas pautas:</string>
+    <string name="legacy_speaker_guideline_1">La persona viene a acompañarte, no a resolver tus problemas ni a dar diagnósticos. El alivio está en expresarte.</string>
+    <string name="legacy_speaker_guideline_2">Puedes sentir rabia, tristeza o frustración profunda. Vuelca tu sentir sobre tu historia, sin atacar a quien te escucha.</string>
+    <string name="legacy_speaker_guideline_3">No tienes que comprimir todo en un solo mensaje. Tómate pausas para respirar y escribir lo que necesitas.</string>
+    <string name="guidelines_continue">Entendido, buscar conversación</string>
+    <plurals name="guidelines_countdown">
+        <item quantity="one">Lee con calma (%1$d segundo)...</item>
+        <item quantity="other">Lee con calma (%1$d segundos)...</item>
+    </plurals>
+
+    <string name="preparing_search">Preparando búsqueda...</string>
+    <string name="searching_listener">Buscando a alguien disponible para escucharte...</string>
+    <string name="searching_speaker">Buscando a alguien que necesite hablar...</string>
+    <plurals name="waiting_time">
+        <item quantity="one">Tiempo en espera: %1$d segundo</item>
+        <item quantity="other">Tiempo en espera: %1$d segundos</item>
+    </plurals>
+    <string name="match_found">¡Conexión encontrada!</string>
+    <string name="entering_room">Ingresando a la sala con: %1$s...</string>
+    <string name="cancel_search">Cancelar búsqueda</string>
+
+    <string name="leave_conversation">Salir de la conversación</string>
+    <string name="leave_conversation_question">¿Deseas finalizar y volver al menú principal?</string>
+    <string name="still_there">¿Sigues ahí?</string>
+    <plurals name="inactivity_warning">
+        <item quantity="one">La sala se cerrará por inactividad en %1$d segundo.</item>
+        <item quantity="other">La sala se cerrará por inactividad en %1$d segundos.</item>
+    </plurals>
+    <string name="keep_talking">Sí, seguir conversando</string>
+    <string name="end_now">Finalizar ahora</string>
+    <string name="partner_ended_session">Sesión finalizada por el compañero</string>
+    <string name="typing">Escribiendo...</string>
+    <string name="online">En línea</string>
+    <string name="end_session">Finalizar</string>
+    <string name="leave">Salir</string>
+    <string name="microphone_muted">&#x1F399;&#xFE0F; Micrófono silenciado</string>
+    <string name="voice_channel_active">&#x1F3A4; Canal de voz activo</string>
+    <string name="unmute">Activar Mic</string>
+    <string name="mute">Mutear</string>
+    <string name="voice_isolation">Aislamiento de voz con IA</string>
+    <string name="partner_left_notice">&#x26A0;&#xFE0F; Tu compañero ha finalizado la sesión. Puedes revisar los mensajes anteriores. Estás solo en la sala.</string>
+    <string name="partner_typing">%1$s está escribiendo...</string>
+    <string name="message_placeholder">Escribe un mensaje...</string>
+    <string name="conversation_ended">La conversación ha finalizado</string>
+
+    <string name="connection_issue_title">Reportar problema de conexión</string>
+    <string name="connection_issue_question">¿Qué salió mal en esta sesión?</string>
+    <string name="connection_issue_placeholder">Describe el problema...</string>
+    <string name="send_issue_detail">Enviar detalle</string>
+    <string name="audio_issue">El audio se escuchaba mal o no funcionó</string>
+    <string name="disconnection_issue">La otra persona se desconectó repentinamente</string>
+    <string name="other_issue">Otro problema...</string>
+    <string name="feedback_reminder">Tu feedback es importante para mantener la calidad de GenteHablando.</string>
+    <string name="feedback_question">¿Qué tal estuvo tu conversación de hoy?</string>
+    <string-array name="feedback_ratings">
+        <item>No me sentí cómodo en la conversación</item>
+        <item>Fue una charla normal</item>
+        <item>Fue una conversación muy agradable</item>
+        <item>Fue una excelente charla, disfruté mucho hablar con esta persona</item>
+    </string-array>
+    <string name="feedback_title">Conversación finalizada</string>
+    <string name="feedback_thanks">Gracias por compartir tu tiempo y conversar con %1$s.</string>
+    <string name="send_feedback_and_leave">Enviar feedback y salir</string>
+    <string name="unexpected_issue">¿Ocurrió algo inesperado?</string>
+    <string name="technical_issue">Problema técnico</string>
+    <string name="report_user">Reportar usuario</string>
+
+    <string name="avatar">Avatar</string>
+    <string name="reputation_title">Tu Reputación</string>
+    <string name="star">Estrella</string>
+    <string name="reputation_score">%1$.1f</string>
+    <string name="new_user">Nuevo</string>
+    <plurals name="reputation_conversations">
+        <item quantity="one">Basado en %1$d conversación</item>
+        <item quantity="other">Basado en %1$d conversaciones</item>
+    </plurals>
+    <string name="academy_progress">Progreso de Academia</string>
+    <string name="completed_courses">Completados</string>
+    <string name="perfect_courses">Perfectos</string>
+    <string name="completionist_master">¡Completionist Master! &#x1F3C6;</string>
+    <string name="sign_out">Cerrar Sesión</string>
+    <string name="sign_out_question">¿Estás seguro de que deseas salir?</string>
+    <string name="delete_account">Eliminar Cuenta</string>
+    <string name="delete_account_question">Esta acción es irreversible. Se borrará tu reputación y tu acceso. ¿Deseas continuar?</string>
+    <string name="delete_permanently">Eliminar definitivamente</string>
+
+    <string name="available_courses">Cursos disponibles</string>
+    <string name="courses_summary">Mejora tus habilidades de comunicación y empatía.</string>
+    <string name="perfect">Perfecto</string>
+    <string name="completed">Completado</string>
+    <string name="start">Empezar</string>
+    <string name="lesson_mastered">¡Lección Dominada!</string>
+    <string name="lesson_passed">Has pasado el test de conocimiento exitosamente.</string>
+    <string name="back_to_academy">Volver a la Academia</string>
+    <string name="review_lesson">Repasa la lección</string>
+    <string name="review_lesson_instructions">Algunas respuestas no fueron correctas. Tómate un tiempo para releer el contenido de la guía y reflexionar.</string>
+    <string name="start_quiz">Iniciar prueba de conocimiento</string>
+    <plurals name="quiz_instructions">
+        <item quantity="one">Responde %1$d pregunta para completar la lección.</item>
+        <item quantity="other">Responde las %1$d preguntas para completar la lección.</item>
+    </plurals>
+    <string name="numbered_question">%1$d. %2$s</string>
+    <string name="submit_answers">Enviar respuestas</string>
+    <string name="quiz_result">Resultado: %1$d/%2$d</string>
+    <string name="your_answer">Tu respuesta: %1$s</string>
+    <string name="hint_label">"Pista: "</string>
+    <string name="retry_perfect">Reintentar para sacar 5/5 &#x2B50;</string>
+    <string name="accept_four">Aceptar mi 4/5 y volver</string>
+    <plurals name="accept_cooldown">
+        <item quantity="one">Entendido (Esperar %1$d minuto)</item>
+        <item quantity="other">Entendido (Esperar %1$d minutos)</item>
+    </plurals>
+
+    <string name="demo_connected">Conectado. Este es un espacio seguro para conversar.</string>
+    <string name="demo_reply_1">Te entiendo perfectamente, tómate el tiempo que necesites.</string>
+    <string name="demo_reply_2">Gracias por compartir eso conmigo. ¿Desde hace cuánto te sientes así?</string>
+    <string name="demo_reply_3">Es completamente comprensible que te afecte de esa manera.</string>
+    <string name="demo_reply_4">Aquí sigo escuchándote con calma, continúa cuando quieras.</string>
+    <string name="demo_reply_5">A veces solo ponerlo en palabras ya quita un poco de peso de encima.</string>
 </resources>
