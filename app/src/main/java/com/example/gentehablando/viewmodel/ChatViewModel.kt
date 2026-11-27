@@ -68,12 +68,12 @@ class ChatViewModel @Inject constructor(
         if (existingId != null) return existingId
         return when (val result = authRepository.signInAnonymously()) {
             is Resource.Success -> result.data
-            else -> "user_" + System.currentTimeMillis()
+            else -> "user_" + System.currentTimeMillis() // i18n: technical Fallback user-ID prefix; not display content.
         }
     }
 
     fun initRoom(roomId: String, partnerAlias: String) {
-        android.util.Log.d("ChatViewModel", "initRoom ejecutándose. Preparando sala $roomId")
+        android.util.Log.d("ChatViewModel", "initRoom ejecutándose. Preparando sala $roomId") // i18n: technical Diagnostic log tag/message; never displayed.
         currentRoomId = roomId
 
         _messages.value = emptyList()
@@ -116,9 +116,9 @@ class ChatViewModel @Inject constructor(
 
         // Conectar automáticamente al canal de voz de Agora
         voiceJob = viewModelScope.launch {
-            android.util.Log.d("ChatViewModel", "Intentando unirse a Agora...")
+            android.util.Log.d("ChatViewModel", "Intentando unirse a Agora...") // i18n: technical Diagnostic log tag/message; never displayed.
             val currentUserId = getOrSignInUserId()
-            android.util.Log.d("ChatViewModel", "ID Obtenido: $currentUserId. Llamando a joinChannel.")
+            android.util.Log.d("ChatViewModel", "ID Obtenido: $currentUserId. Llamando a joinChannel.") // i18n: technical Diagnostic log tag/message; never displayed.
             voiceRepository.joinChannel(roomId, currentUserId)
         }
         

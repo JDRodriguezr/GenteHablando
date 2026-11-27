@@ -3,6 +3,7 @@ package com.example.gentehablando.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gentehablando.domain.model.Resource
+import com.example.gentehablando.domain.model.AppError
 import com.example.gentehablando.domain.repository.AuthRepository
 import com.example.gentehablando.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +31,7 @@ class FeedbackViewModel @Inject constructor(
                 val result = userRepository.submitFeedback(roomId, currentUserId, rating, isReport, issueType, issueText)
                 _feedbackState.value = result
             } else {
-                _feedbackState.value = Resource.Error("Sesión expirada o usuario no autenticado")
+                _feedbackState.value = Resource.Error(AppError.NotAuthenticated)
             }
         }
     }

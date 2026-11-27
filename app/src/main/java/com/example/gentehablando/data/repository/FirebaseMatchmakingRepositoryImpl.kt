@@ -23,7 +23,8 @@ class FirebaseMatchmakingRepositoryImpl @Inject constructor(
 ) : MatchmakingRepository {
 
     override fun observeMatchmaking(role: UserRole, userId: String): Flow<MatchmakingUiState> = callbackFlow {
-        val targetRole = if (role == UserRole.SPEAKER) UserRole.LISTENER.name else UserRole.SPEAKER.name
+        val partnerRole = if (role == UserRole.SPEAKER) UserRole.LISTENER else UserRole.SPEAKER
+        val targetRole = partnerRole.name
         trySend(MatchmakingUiState.Searching(0))
 
         var queueListener: ListenerRegistration? = null
@@ -31,26 +32,25 @@ class FirebaseMatchmakingRepositoryImpl @Inject constructor(
 
         // 1. Me agrego a la cola
         val queueData = hashMapOf(
-            "userId" to userId,
-            "role" to role.name,
-            "createdAt" to FieldValue.serverTimestamp()
+            "userId" to userId, // i18n: technical Firestore collection/field key; preserves the backend schema.
+            "role" to role.name, // i18n: technical Firestore collection/field key; preserves the backend schema.
+            "createdAt" to FieldValue.serverTimestamp() // i18n: technical Firestore collection/field key; preserves the backend schema.
         )
         try {
-            firestore.collection("matchmaking_queue").document(userId).set(queueData)
+            firestore.collection("matchmaking_queue").document(userId).set(queueData) // i18n: technical Firestore collection/field key; preserves the backend schema.
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
         // 2. Escucho MI PROPIO DOCUMENTO en la cola. 
         // Si el "SPEAKER" me encuentra, agregará el "matchedRoomId" aquí.
-        queueListener = firestore.collection("matchmaking_queue").document(userId)
+        queueListener = firestore.collection("matchmaking_queue").document(userId) // i18n: technical Firestore collection/field key; preserves the backend schema.
             .addSnapshotListener { snapshot, error ->
                 if (error != null || snapshot == null) return@addSnapshotListener
                 
-                val matchedRoomId = snapshot.getString("matchedRoomId")
+                val matchedRoomId = snapshot.getString("matchedRoomId") // i18n: technical Firestore collection/field key; preserves the backend schema.
                 if (matchedRoomId != null) {
-                    val partnerAlias = if (role == UserRole.SPEAKER) "Oyente" else "Hablante"
-                    trySend(MatchmakingUiState.Matched(partnerAlias, matchedRoomId))
+                    trySend(MatchmakingUiState.Matched(partnerRole, matchedRoomId))
                 }
             }
 
@@ -59,35 +59,35 @@ class FirebaseMatchmakingRepositoryImpl @Inject constructor(
             matchmakingJob = CoroutineScope(Dispatchers.IO).launch {
                 while (isActive) {
                     try {
-                        val pendingQuery = firestore.collection("matchmaking_queue")
-                            .whereEqualTo("role", targetRole)
+                        val pendingQuery = firestore.collection("matchmaking_queue") // i18n: technical Firestore collection/field key; preserves the backend schema.
+                            .whereEqualTo("role", targetRole) // i18n: technical Firestore collection/field key; preserves the backend schema.
                             .get().await()
 
                         // Buscamos un oyente que aún no tenga sala asignada
-                        val partnerDoc = pendingQuery.documents.firstOrNull { it.id != userId && !it.contains("matchedRoomId") }
+                        val partnerDoc = pendingQuery.documents.firstOrNull { it.id != userId && !it.contains("matchedRoomId") } // i18n: technical Firestore collection/field key; preserves the backend schema.
                         if (partnerDoc != null) {
-                            val partnerId = partnerDoc.getString("userId") ?: partnerDoc.id
+                            val partnerId = partnerDoc.getString("userId") ?: partnerDoc.id // i18n: technical Firestore collection/field key; preserves the backend schema.
                             
                             // ID de Sala Seguro y Fresco 100%
-                            val freshRoomId = "room_session_" + UUID.randomUUID().toString().take(12)
+                            val freshRoomId = "room_session_" + UUID.randomUUID().toString().take(12) // i18n: technical Generated room-ID prefix; not a display alias.
 
                             val newRoom = hashMapOf(
-                                "active" to true,
-                                "participants" to listOf(userId, partnerId),
-                                "speakerId" to userId,
-                                "listenerId" to partnerId,
-                                "createdAt" to FieldValue.serverTimestamp()
+                                "active" to true, // i18n: technical Firestore collection/field key; preserves the backend schema.
+                                "participants" to listOf(userId, partnerId), // i18n: technical Firestore collection/field key; preserves the backend schema.
+                                "speakerId" to userId, // i18n: technical Firestore collection/field key; preserves the backend schema.
+                                "listenerId" to partnerId, // i18n: technical Firestore collection/field key; preserves the backend schema.
+                                "createdAt" to FieldValue.serverTimestamp() // i18n: technical Firestore collection/field key; preserves the backend schema.
                             )
 
                             // Operación Atómica: Crea sala y avisa a ambos usuarios (escribiendo en sus colas)
                             firestore.runTransaction { transaction ->
-                                val roomRef = firestore.collection("rooms").document(freshRoomId)
-                                val queueMyRef = firestore.collection("matchmaking_queue").document(userId)
-                                val queuePartnerRef = firestore.collection("matchmaking_queue").document(partnerId)
+                                val roomRef = firestore.collection("rooms").document(freshRoomId) // i18n: technical Firestore collection/field key; preserves the backend schema.
+                                val queueMyRef = firestore.collection("matchmaking_queue").document(userId) // i18n: technical Firestore collection/field key; preserves the backend schema.
+                                val queuePartnerRef = firestore.collection("matchmaking_queue").document(partnerId) // i18n: technical Firestore collection/field key; preserves the backend schema.
 
                                 transaction.set(roomRef, newRoom)
-                                transaction.update(queueMyRef, "matchedRoomId", freshRoomId)
-                                transaction.update(queuePartnerRef, "matchedRoomId", freshRoomId)
+                                transaction.update(queueMyRef, "matchedRoomId", freshRoomId) // i18n: technical Firestore collection/field key; preserves the backend schema.
+                                transaction.update(queuePartnerRef, "matchedRoomId", freshRoomId) // i18n: technical Firestore collection/field key; preserves the backend schema.
                             }.await()
                             break // Terminamos la búsqueda porque ya lo emparejamos
                         }
@@ -106,7 +106,7 @@ class FirebaseMatchmakingRepositoryImpl @Inject constructor(
 
     override suspend fun cancelMatchmaking(userId: String) {
         try {
-            firestore.collection("matchmaking_queue").document(userId).delete()
+            firestore.collection("matchmaking_queue").document(userId).delete() // i18n: technical Firestore collection/field key; preserves the backend schema.
         } catch (_: Exception) {}
     }
 }

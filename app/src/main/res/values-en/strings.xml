@@ -1,0 +1,196 @@
+<resources>
+    <string name="cancel">Cancel</string>
+    <string name="back">Back</string>
+    <string name="understood">Understood</string>
+    <string name="yes_leave">Yes, leave</string>
+    <string name="send">Send</string>
+    <string name="number">%1$d</string>
+    <string name="score_fraction">%1$d/%2$d</string>
+    <string name="countdown_time">%1$02d:%2$02d</string>
+    <string name="profile_title">My profile</string>
+    <string name="academy_title">Academy</string>
+    <string name="listener_label">Listener</string>
+    <string name="speaker_label">Speaker</string>
+    <string name="demo_listener_alias">Kind_Listener_42</string>
+    <string name="demo_speaker_alias">Sincere_Speaker_07</string>
+
+    <string name="account_suspended">Account suspended</string>
+    <string name="account_suspended_message">Your account has been temporarily blocked because you received multiple reports of misconduct in the last 30 days. You cannot start new conversations at this time.</string>
+    <string name="appeal_link">Think this is unfair? Appeal</string>
+    <string name="appeal_title">Appeal suspension</string>
+    <string name="appeal_instructions">Tell us what happened. Our support team will review your case using the history of the reported rooms.</string>
+    <string name="appeal_placeholder">Write your explanation...</string>
+    <string name="appeal_sent">Appeal sent.</string>
+    <string name="send_appeal">Send appeal</string>
+    <string name="home_tagline">Human connection without judgment.</string>
+    <string name="home_intention">What would you like to do today?</string>
+    <string name="learn_to_connect">Learn to connect</string>
+    <string name="academy_summary">Lessons for better conversations.</string>
+    <string name="find_match">Find a match</string>
+    <string name="sign_in_to_continue">Sign in to continue</string>
+    <string name="speaker_title">I want to talk</string>
+    <string name="speaker_description">I\'m looking for a safe space to talk and be heard.</string>
+    <string name="listener_title">I want to listen</string>
+    <string name="listener_description">I want to offer my time and attention to listen without judgment.</string>
+
+    <string name="login_instructions">You need to sign in to help keep this space safe and empathetic.</string>
+    <string name="signing_in">Signing in...</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="error_google_empty_token">Google did not return an access token. Sign in again.</string>
+    <string name="error_google_configuration">Error 10: The Firebase SHA-1 fingerprint is incorrect or missing. Contact the app maintainer.</string>
+    <string name="error_google_cancelled">Sign-in cancelled. You can try again.</string>
+    <string name="error_google_popup">Google sign-in window error: code %1$d. Try again.</string>
+    <string name="error_google_user">Google did not return a valid user ID. Sign in again.</string>
+    <string name="error_google_authentication">Could not sign in with Google. Try again.</string>
+    <string name="error_delete_account">Could not delete your account. Sign in again and retry.</string>
+    <string name="error_send_message">Could not send your message. Check your connection and try again.</string>
+    <string name="error_update_typing">Could not update your typing status. Check your connection.</string>
+    <string name="error_leave_room">Could not leave the room. Check your connection and try again.</string>
+    <string name="error_room_not_found">Room not found. Return to the main menu.</string>
+    <string name="error_not_room_member">You are not a member of this room. Return to the main menu.</string>
+    <string name="error_invalid_partner">Could not identify your conversation partner. Return to the main menu.</string>
+    <string name="error_send_feedback">Could not send feedback to the server. Check your connection and try again.</string>
+    <string name="error_send_appeal">Could not send your appeal. Check your connection and try again.</string>
+    <string name="error_not_authenticated">Your session expired or you are not signed in. Sign in again.</string>
+    <string name="error_empty_message">Write a message before sending it.</string>
+
+    <string name="before_speaking">Before you talk...</string>
+    <string name="before_listening">Before you listen...</string>
+    <string name="speaker_guidelines_intro">A volunteer is ready to talk with you. Keep these guidelines in mind:</string>
+    <string name="listener_guidelines_intro">Someone is looking for a safe space to talk. Keep these guidelines in mind:</string>
+    <string name="speaker_guideline_1_title">This is not professional therapy</string>
+    <string name="speaker_guideline_1_body">The other person is here to support you, not to solve your problems or provide a diagnosis. Human connection can bring relief.</string>
+    <string name="speaker_guideline_2_title">All emotions are welcome; aggression is not</string>
+    <string name="speaker_guideline_2_body">You can feel anger, sadness, or frustration. Express those feelings through your story without attacking the person listening.</string>
+    <string name="speaker_guideline_3_title">At your own pace</string>
+    <string name="speaker_guideline_3_body">You don\'t have to fit everything into one message. Pause to breathe and express yourself as you need.</string>
+    <string name="speaker_guideline_4_title">Care for each other</string>
+    <string name="speaker_guideline_4_body">If the conversation is not helping or crosses your boundaries, you have the right to end it respectfully at any time.</string>
+    <string name="listener_guideline_1_title">Listen actively, without judgment</string>
+    <string name="listener_guideline_1_body">Your presence and attention without prejudice are the best support you can offer. Let the conversation flow.</string>
+    <string name="listener_guideline_2_title">Avoid unsolicited advice</string>
+    <string name="listener_guideline_2_body">The goal is to offer an empathetic space without pressure, not to solve the other person\'s life.</string>
+    <string name="listener_guideline_3_title">Respect and anonymous privacy</string>
+    <string name="listener_guideline_3_body">Everything shared is confidential. Stay kind and respect the anonymity of the session.</string>
+    <string name="listener_guideline_4_title">Look after your own well-being</string>
+    <string name="listener_guideline_4_body">If the conversation exceeds your emotional limits or makes you uncomfortable, you can end it kindly.</string>
+    <string name="legacy_speaker_intro">A volunteer is ready to listen to you. Keep these guidelines in mind:</string>
+    <string name="legacy_speaker_guideline_1">The other person is here to support you, not to solve your problems or provide a diagnosis. Expressing yourself can bring relief.</string>
+    <string name="legacy_speaker_guideline_2">You can feel anger, sadness, or deep frustration. Express those feelings through your story without attacking the person listening.</string>
+    <string name="legacy_speaker_guideline_3">You don\'t have to fit everything into one message. Pause to breathe and write what you need.</string>
+    <string name="guidelines_continue">Understood, find a conversation</string>
+    <plurals name="guidelines_countdown">
+        <item quantity="one">Take your time reading (%1$d second)...</item>
+        <item quantity="other">Take your time reading (%1$d seconds)...</item>
+    </plurals>
+
+    <string name="preparing_search">Preparing your search...</string>
+    <string name="searching_listener">Looking for someone available to listen...</string>
+    <string name="searching_speaker">Looking for someone who needs to talk...</string>
+    <plurals name="waiting_time">
+        <item quantity="one">Waiting time: %1$d second</item>
+        <item quantity="other">Waiting time: %1$d seconds</item>
+    </plurals>
+    <string name="match_found">Connection found!</string>
+    <string name="entering_room">Entering the room with: %1$s...</string>
+    <string name="cancel_search">Cancel search</string>
+
+    <string name="leave_conversation">Leave conversation</string>
+    <string name="leave_conversation_question">Do you want to end this conversation and return to the main menu?</string>
+    <string name="still_there">Are you still there?</string>
+    <plurals name="inactivity_warning">
+        <item quantity="one">The room will close due to inactivity in %1$d second.</item>
+        <item quantity="other">The room will close due to inactivity in %1$d seconds.</item>
+    </plurals>
+    <string name="keep_talking">Yes, keep talking</string>
+    <string name="end_now">End now</string>
+    <string name="partner_ended_session">Your partner ended the session</string>
+    <string name="typing">Typing...</string>
+    <string name="online">Online</string>
+    <string name="end_session">End</string>
+    <string name="leave">Leave</string>
+    <string name="microphone_muted">&#x1F399;&#xFE0F; Microphone muted</string>
+    <string name="voice_channel_active">&#x1F3A4; Voice channel active</string>
+    <string name="unmute">Unmute</string>
+    <string name="mute">Mute</string>
+    <string name="voice_isolation">AI voice isolation</string>
+    <string name="partner_left_notice">&#x26A0;&#xFE0F; Your partner ended the session. You can review earlier messages. You are alone in the room.</string>
+    <string name="partner_typing">%1$s is typing...</string>
+    <string name="message_placeholder">Write a message...</string>
+    <string name="conversation_ended">The conversation has ended</string>
+
+    <string name="connection_issue_title">Report a connection problem</string>
+    <string name="connection_issue_question">What went wrong in this session?</string>
+    <string name="connection_issue_placeholder">Describe the problem...</string>
+    <string name="send_issue_detail">Send details</string>
+    <string name="audio_issue">The audio sounded bad or did not work</string>
+    <string name="disconnection_issue">The other person disconnected unexpectedly</string>
+    <string name="other_issue">Another problem...</string>
+    <string name="feedback_reminder">Your feedback helps maintain the quality of GenteHablando.</string>
+    <string name="feedback_question">How was your conversation today?</string>
+    <string-array name="feedback_ratings">
+        <item>I did not feel comfortable in the conversation</item>
+        <item>It was an ordinary conversation</item>
+        <item>It was a very pleasant conversation</item>
+        <item>It was an excellent conversation; I really enjoyed talking with this person</item>
+    </string-array>
+    <string name="feedback_title">Conversation ended</string>
+    <string name="feedback_thanks">Thank you for sharing your time and talking with %1$s.</string>
+    <string name="send_feedback_and_leave">Send feedback and leave</string>
+    <string name="unexpected_issue">Did something unexpected happen?</string>
+    <string name="technical_issue">Technical problem</string>
+    <string name="report_user">Report user</string>
+
+    <string name="avatar">Avatar</string>
+    <string name="reputation_title">Your reputation</string>
+    <string name="star">Star</string>
+    <string name="reputation_score">%1$.1f</string>
+    <string name="new_user">New</string>
+    <plurals name="reputation_conversations">
+        <item quantity="one">Based on %1$d conversation</item>
+        <item quantity="other">Based on %1$d conversations</item>
+    </plurals>
+    <string name="academy_progress">Academy progress</string>
+    <string name="completed_courses">Completed</string>
+    <string name="perfect_courses">Perfect</string>
+    <string name="completionist_master">Completionist Master! &#x1F3C6;</string>
+    <string name="sign_out">Sign out</string>
+    <string name="sign_out_question">Are you sure you want to sign out?</string>
+    <string name="delete_account">Delete account</string>
+    <string name="delete_account_question">This action cannot be undone. Your reputation and access will be deleted. Do you want to continue?</string>
+    <string name="delete_permanently">Delete permanently</string>
+
+    <string name="available_courses">Available courses</string>
+    <string name="courses_summary">Improve your communication and empathy skills.</string>
+    <string name="perfect">Perfect</string>
+    <string name="completed">Completed</string>
+    <string name="start">Start</string>
+    <string name="lesson_mastered">Lesson mastered!</string>
+    <string name="lesson_passed">You passed the knowledge quiz.</string>
+    <string name="back_to_academy">Back to the Academy</string>
+    <string name="review_lesson">Review the lesson</string>
+    <string name="review_lesson_instructions">Some answers were incorrect. Take time to reread the lesson and reflect.</string>
+    <string name="start_quiz">Start knowledge quiz</string>
+    <plurals name="quiz_instructions">
+        <item quantity="one">Answer %1$d question to complete the lesson.</item>
+        <item quantity="other">Answer all %1$d questions to complete the lesson.</item>
+    </plurals>
+    <string name="numbered_question">%1$d. %2$s</string>
+    <string name="submit_answers">Submit answers</string>
+    <string name="quiz_result">Result: %1$d/%2$d</string>
+    <string name="your_answer">Your answer: %1$s</string>
+    <string name="hint_label">"Hint: "</string>
+    <string name="retry_perfect">Try again for 5/5 &#x2B50;</string>
+    <string name="accept_four">Keep my 4/5 and go back</string>
+    <plurals name="accept_cooldown">
+        <item quantity="one">Understood (Wait %1$d minute)</item>
+        <item quantity="other">Understood (Wait %1$d minutes)</item>
+    </plurals>
+
+    <string name="demo_connected">Connected. This is a safe space to talk.</string>
+    <string name="demo_reply_1">I understand. Take all the time you need.</string>
+    <string name="demo_reply_2">Thank you for sharing that with me. How long have you felt this way?</string>
+    <string name="demo_reply_3">It makes sense that this would affect you that way.</string>
+    <string name="demo_reply_4">I\'m still here listening. Continue whenever you want.</string>
+    <string name="demo_reply_5">Sometimes putting it into words takes a little weight off your shoulders.</string>
+</resources>

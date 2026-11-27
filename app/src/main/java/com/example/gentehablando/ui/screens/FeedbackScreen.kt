@@ -33,7 +33,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,6 +40,10 @@ import com.example.gentehablando.domain.model.Resource
 import com.example.gentehablando.model.UserRole
 import com.example.gentehablando.utils.AdManager
 import android.app.Activity
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
+import com.example.gentehablando.R
+import com.example.gentehablando.ui.text.localizedMessage
 
 @Composable
 fun FeedbackScreen(
@@ -98,16 +101,16 @@ fun FeedbackScreen(
                 isOtherSelected = false
                 issueTextInput = ""
             },
-            title = { Text("Reportar problema de conexión") },
+            title = { Text(stringResource(R.string.connection_issue_title)) },
             text = {
                 Column {
-                    Text("¿Qué salió mal en esta sesión?")
+                    Text(stringResource(R.string.connection_issue_question))
                     if (isOtherSelected) {
                         Spacer(modifier = Modifier.height(12.dp))
                         androidx.compose.material3.OutlinedTextField(
                             value = issueTextInput,
                             onValueChange = { issueTextInput = it },
-                            placeholder = { Text("Describe el problema...") },
+                            placeholder = { Text(stringResource(R.string.connection_issue_placeholder)) },
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
@@ -117,14 +120,14 @@ fun FeedbackScreen(
                 if (isOtherSelected) {
                     Button(
                         onClick = {
-                            viewModel.submitFeedback(roomId, 0, false, "OTHER", issueTextInput)
+                            viewModel.submitFeedback(roomId, 0, false, "OTHER", issueTextInput) // i18n: technical Feedback issue code sent unchanged to Firestore.
                             showIssueDialog = false
                             isOtherSelected = false
                             issueTextInput = ""
                         },
                         enabled = issueTextInput.isNotBlank()
                     ) {
-                        Text("Enviar detalle")
+                        Text(stringResource(R.string.send_issue_detail))
                     }
                 }
             },
@@ -132,26 +135,26 @@ fun FeedbackScreen(
                 if (!isOtherSelected) {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         TextButton(onClick = { 
-                            viewModel.submitFeedback(roomId, 0, false, "AUDIO_BAD") 
+                            viewModel.submitFeedback(roomId, 0, false, "AUDIO_BAD") // i18n: technical Feedback issue code sent unchanged to Firestore.
                             showIssueDialog = false
                         }, modifier = Modifier.fillMaxWidth()) {
-                            Text("El audio se escuchaba mal o no funcionó")
+                            Text(stringResource(R.string.audio_issue))
                         }
                         TextButton(onClick = { 
-                            viewModel.submitFeedback(roomId, 0, false, "DISCONNECTED") 
+                            viewModel.submitFeedback(roomId, 0, false, "DISCONNECTED") // i18n: technical Feedback issue code sent unchanged to Firestore.
                             showIssueDialog = false
                         }, modifier = Modifier.fillMaxWidth()) {
-                            Text("La otra persona se desconectó repentinamente")
+                            Text(stringResource(R.string.disconnection_issue))
                         }
                         TextButton(onClick = { 
                             isOtherSelected = true
                         }, modifier = Modifier.fillMaxWidth()) {
-                            Text("Otro problema...")
+                            Text(stringResource(R.string.other_issue))
                         }
                         TextButton(onClick = { 
                             showIssueDialog = false
                         }, modifier = Modifier.fillMaxWidth()) {
-                            Text("Cancelar", color = MaterialTheme.colorScheme.outline)
+                            Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.outline)
                         }
                     }
                 } else {
@@ -159,7 +162,7 @@ fun FeedbackScreen(
                         isOtherSelected = false
                         issueTextInput = ""
                     }) {
-                        Text("Volver")
+                        Text(stringResource(R.string.back))
                     }
                 }
             }
@@ -180,7 +183,7 @@ fun FeedbackScreen(
                 modifier = Modifier.padding(bottom = 32.dp)
             ) {
                 Text(
-                    text = "Tu feedback es importante para mantener la calidad de GenteHablando.",
+                    text = stringResource(R.string.feedback_reminder),
                     color = MaterialTheme.colorScheme.inverseOnSurface,
                     modifier = Modifier.padding(16.dp),
                     fontSize = 14.sp
@@ -190,15 +193,11 @@ fun FeedbackScreen(
     }
 
     // Pregunta unificada para ambos roles: El enfoque es la conexión humana
-    val questionText = "¿Qué tal estuvo tu conversación de hoy?"
+    val questionText = stringResource(R.string.feedback_question)
 
     // Opciones 100% neutrales
-    val options = listOf(
-        1 to "No me sentí cómodo en la conversación",
-        2 to "Fue una charla normal",
-        3 to "Fue una conversación muy agradable",
-        4 to "Fue una excelente charla, disfruté mucho hablar con esta persona"
-    )
+    val options = stringArrayResource(R.array.feedback_ratings).mapIndexed { index, label -> index + 1 to label }
+    val thanksText = stringResource(R.string.feedback_thanks, partnerAlias)
 
     Column(
         modifier = modifier
@@ -214,7 +213,7 @@ fun FeedbackScreen(
             Spacer(modifier = Modifier.height(28.dp))
 
             Text(
-                text = "Conversación finalizada",
+                text = stringResource(R.string.feedback_title),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
@@ -222,11 +221,15 @@ fun FeedbackScreen(
             Spacer(modifier = Modifier.height(8.dp))
             androidx.compose.material3.Text(
                 text = androidx.compose.ui.text.buildAnnotatedString {
-                    append("Gracias por compartir tu tiempo y conversar con ")
-                    withStyle(style = androidx.compose.ui.text.SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append(partnerAlias)
+                    append(thanksText)
+                    val aliasStart = thanksText.lastIndexOf(partnerAlias)
+                    if (aliasStart >= 0) {
+                        addStyle(
+                            androidx.compose.ui.text.SpanStyle(fontWeight = FontWeight.Bold),
+                            aliasStart,
+                            aliasStart + partnerAlias.length
+                        )
                     }
-                    append(".")
                 },
                 fontSize = 15.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -292,7 +295,7 @@ fun FeedbackScreen(
                     shape = RoundedCornerShape(14.dp)
                 ) {
                     Text(
-                        text = "Enviar feedback y salir",
+                        text = stringResource(R.string.send_feedback_and_leave),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -301,7 +304,7 @@ fun FeedbackScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 
                 Text(
-                    text = "¿Ocurrió algo inesperado?",
+                    text = stringResource(R.string.unexpected_issue),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -321,7 +324,7 @@ fun FeedbackScreen(
                             .height(48.dp),
                         shape = RoundedCornerShape(14.dp)
                     ) {
-                        Text("Problema técnico", fontSize = 13.sp)
+                        Text(stringResource(R.string.technical_issue), fontSize = 13.sp)
                     }
                     
                     Spacer(modifier = Modifier.width(8.dp))
@@ -335,14 +338,14 @@ fun FeedbackScreen(
                             .height(48.dp),
                         shape = RoundedCornerShape(14.dp)
                     ) {
-                        Text("Reportar usuario", color = MaterialTheme.colorScheme.error, fontSize = 13.sp)
+                        Text(stringResource(R.string.report_user), color = MaterialTheme.colorScheme.error, fontSize = 13.sp)
                     }
                 }
 
                 if (feedbackState is Resource.Error) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = (feedbackState as Resource.Error).message,
+                        text = (feedbackState as Resource.Error).localizedMessage(),
                         color = MaterialTheme.colorScheme.error,
                         fontSize = 13.sp,
                         textAlign = TextAlign.Center

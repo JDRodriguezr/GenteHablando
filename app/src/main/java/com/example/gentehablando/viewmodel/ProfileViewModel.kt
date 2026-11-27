@@ -3,6 +3,7 @@ package com.example.gentehablando.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gentehablando.domain.model.Resource
+import com.example.gentehablando.domain.model.AppError
 import com.example.gentehablando.domain.model.UserProfile
 import com.example.gentehablando.domain.repository.AuthRepository
 import com.example.gentehablando.domain.repository.UserRepository
@@ -66,7 +67,7 @@ class ProfileViewModel @Inject constructor(
                 val result = userRepository.submitAppeal(uid, explanation, reportedRoomIds)
                 _actionState.value = result
             } else {
-                _actionState.value = Resource.Error("No estás autenticado")
+                _actionState.value = Resource.Error(AppError.NotAuthenticated)
             }
         }
     }

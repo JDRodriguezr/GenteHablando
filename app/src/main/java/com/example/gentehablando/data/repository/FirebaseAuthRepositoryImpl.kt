@@ -2,6 +2,7 @@ package com.example.gentehablando.data.repository
 
 import android.content.Context
 import com.example.gentehablando.domain.model.Resource
+import com.example.gentehablando.domain.model.AppError
 import com.example.gentehablando.domain.repository.AuthRepository
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -11,19 +12,20 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
 import javax.inject.Inject
+import kotlinx.coroutines.CancellationException
 
 class FirebaseAuthRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth,
     @ApplicationContext private val context: Context
 ) : AuthRepository {
 
-    private val prefs = context.getSharedPreferences("app_user_prefs", Context.MODE_PRIVATE)
+    private val prefs = context.getSharedPreferences("app_user_prefs", Context.MODE_PRIVATE) // i18n: technical Local identity storage key/prefix; not display content.
 
     private fun getLocalPersistentUid(): String {
-        var localId = prefs.getString("persistent_uid", null)
+        var localId = prefs.getString("persistent_uid", null) // i18n: technical Local identity storage key/prefix; not display content.
         if (localId == null) {
-            localId = "usr_" + UUID.randomUUID().toString().take(12)
-            prefs.edit().putString("persistent_uid", localId).apply()
+            localId = "usr_" + UUID.randomUUID().toString().take(12) // i18n: technical Local identity storage key/prefix; not display content.
+            prefs.edit().putString("persistent_uid", localId).apply() // i18n: technical Local identity storage key/prefix; not display content.
         }
         return localId
     }
@@ -33,7 +35,7 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
             val result = auth.signInAnonymously().await()
             val uid = result.user?.uid
             if (uid != null) {
-                prefs.edit().putString("persistent_uid", uid).apply()
+                prefs.edit().putString("persistent_uid", uid).apply() // i18n: technical Local identity storage key/prefix; not display content.
                 Resource.Success(uid)
             } else {
                 val fallbackId = getLocalPersistentUid()
@@ -54,19 +56,20 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
             val uid = result.user?.uid
             if (uid != null) {
                 // Borramos el UID anónimo local (ya no lo necesitamos, tenemos cuenta real)
-                prefs.edit().putString("persistent_uid", uid).apply()
+                prefs.edit().putString("persistent_uid", uid).apply() // i18n: technical Local identity storage key/prefix; not display content.
                 Resource.Success(uid)
             } else {
-                Resource.Error("UID no válido tras login con Google")
+                Resource.Error(AppError.InvalidGoogleUser)
             }
         } catch (e: Exception) {
-            Resource.Error(e.localizedMessage ?: "Error de autenticación con Google")
+            if (e is CancellationException) throw e
+            Resource.Error(AppError.GoogleAuthentication, e)
         }
     }
 
     override fun getCurrentUserId(): String? {
         val firebaseUid = try { auth.currentUser?.uid } catch (_: Exception) { null }
-        return firebaseUid ?: prefs.getString("persistent_uid", null) ?: getLocalPersistentUid()
+        return firebaseUid ?: prefs.getString("persistent_uid", null) ?: getLocalPersistentUid() // i18n: technical Local identity storage key/prefix; not display content.
     }
     
     override fun isUserLoggedInWithAccount(): Boolean {
@@ -78,6 +81,7 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
     override suspend fun signOut() {
         try {
             auth.signOut()
+            // i18n: technical Local identity storage key/prefix; not display content.
             prefs.edit().remove("persistent_uid").apply() // Limpiamos el caché
         } catch (_: Exception) {}
     }
@@ -85,10 +89,11 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
     override suspend fun deleteAccount(): Resource<Unit> {
         return try {
             auth.currentUser?.delete()?.await()
-            prefs.edit().remove("persistent_uid").apply()
+            prefs.edit().remove("persistent_uid").apply() // i18n: technical Local identity storage key/prefix; not display content.
             Resource.Success(Unit)
         } catch (e: Exception) {
-            Resource.Error(e.localizedMessage ?: "Error al eliminar la cuenta")
+            if (e is CancellationException) throw e
+            Resource.Error(AppError.DeleteAccount, e)
         }
     }
 

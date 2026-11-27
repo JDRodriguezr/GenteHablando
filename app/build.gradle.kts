@@ -41,6 +41,10 @@ android {
     buildFeatures {
         compose = true
     }
+    lint {
+        enable += setOf("HardcodedText", "MissingTranslation", "ExtraTranslation", "StringFormatInvalid", "StringFormatMatches")
+        fatal += setOf("HardcodedText", "MissingTranslation", "ExtraTranslation", "StringFormatInvalid", "StringFormatMatches")
+    }
 }
 
 dependencies {

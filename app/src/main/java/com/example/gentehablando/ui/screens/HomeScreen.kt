@@ -48,6 +48,9 @@ import com.example.gentehablando.domain.model.Resource
 import com.example.gentehablando.viewmodel.ProfileViewModel
 import com.example.gentehablando.utils.AdManager
 import android.app.Activity
+import androidx.compose.ui.res.stringResource
+import com.example.gentehablando.R
+import com.example.gentehablando.ui.text.localizedMessage
 
 @Composable
 fun HomeScreen(
@@ -73,11 +76,11 @@ fun HomeScreen(
     if (showBannedDialog) {
         AlertDialog(
             onDismissRequest = { showBannedDialog = false },
-            title = { Text("Cuenta suspendida", color = MaterialTheme.colorScheme.error) },
-            text = { Text("Tu cuenta ha sido bloqueada temporalmente debido a que acumulaste múltiples reportes de conducta indebida en los últimos 30 días. Actualmente no puedes iniciar nuevas conversaciones.") },
+            title = { Text(stringResource(R.string.account_suspended), color = MaterialTheme.colorScheme.error) },
+            text = { Text(stringResource(R.string.account_suspended_message)) },
             confirmButton = {
                 Button(onClick = { showBannedDialog = false }) {
-                    Text("Entendido")
+                    Text(stringResource(R.string.understood))
                 }
             },
             dismissButton = {
@@ -85,7 +88,7 @@ fun HomeScreen(
                     showBannedDialog = false
                     showAppealDialog = true 
                 }) {
-                    Text("¿Crees que es injusto? Apelar")
+                    Text(stringResource(R.string.appeal_link))
                 }
             }
         )
@@ -97,15 +100,15 @@ fun HomeScreen(
                 showAppealDialog = false 
                 profileViewModel.resetActionState()
             },
-            title = { Text("Apelar Suspensión") },
+            title = { Text(stringResource(R.string.appeal_title)) },
             text = {
                 Column {
-                    Text("Cuéntanos qué sucedió. Nuestro equipo de soporte revisará manualmente tu caso utilizando el registro histórico de las salas reportadas.")
+                    Text(stringResource(R.string.appeal_instructions))
                     Spacer(modifier = Modifier.height(12.dp))
                     OutlinedTextField(
                         value = appealText,
                         onValueChange = { appealText = it },
-                        placeholder = { Text("Escribe tu explicación...") },
+                        placeholder = { Text(stringResource(R.string.appeal_placeholder)) },
                         modifier = Modifier.fillMaxWidth()
                     )
                     
@@ -115,11 +118,11 @@ fun HomeScreen(
                     }
                     if (profileActionState is Resource.Success) {
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text("Apelación enviada correctamente.", color = Color(0xFF4CAF50))
+                        Text(stringResource(R.string.appeal_sent), color = Color(0xFF4CAF50))
                     }
                     if (profileActionState is Resource.Error) {
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text((profileActionState as Resource.Error).message, color = MaterialTheme.colorScheme.error)
+                        Text((profileActionState as Resource.Error).localizedMessage(), color = MaterialTheme.colorScheme.error)
                     }
                 }
             },
@@ -130,7 +133,7 @@ fun HomeScreen(
                     },
                     enabled = appealText.isNotBlank() && profileActionState !is Resource.Loading && profileActionState !is Resource.Success
                 ) {
-                    Text("Enviar Apelación")
+                    Text(stringResource(R.string.send_appeal))
                 }
             },
             dismissButton = {
@@ -138,7 +141,7 @@ fun HomeScreen(
                     showAppealDialog = false 
                     profileViewModel.resetActionState()
                 }) {
-                    Text("Cancelar")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -159,14 +162,14 @@ fun HomeScreen(
             ) {
                 Column {
                     Text(
-                        text = "GenteHablando",
+                        text = stringResource(R.string.app_name),
                         fontSize = 30.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = "Conexiones humanas sin juicios.",
+                        text = stringResource(R.string.home_tagline),
                         fontSize = 15.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -187,7 +190,7 @@ fun HomeScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.AccountCircle,
-                        contentDescription = "Mi Perfil",
+                        contentDescription = stringResource(R.string.profile_title),
                         modifier = Modifier.size(36.dp),
                         tint = MaterialTheme.colorScheme.primary
                     )
@@ -197,7 +200,7 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             Text(
-                text = "¿Cuál es tu intención hoy?",
+                text = stringResource(R.string.home_intention),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
@@ -216,7 +219,7 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(24.dp))
             
             Text(
-                text = "Academia",
+                text = stringResource(R.string.academy_title),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
@@ -239,21 +242,21 @@ fun HomeScreen(
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.MenuBook,
-                        contentDescription = "Academia",
+                        contentDescription = stringResource(R.string.academy_title),
                         tint = MaterialTheme.colorScheme.secondary,
                         modifier = Modifier.size(32.dp)
                     )
                     Spacer(modifier = Modifier.width(16.dp))
                     Column {
                         Text(
-                            text = "Aprende a conectar",
+                            text = stringResource(R.string.learn_to_connect),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = "Lecciones para mejores conversaciones.",
+                            text = stringResource(R.string.academy_summary),
                             fontSize = 13.sp,
                             color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.8f)
                         )
@@ -291,7 +294,7 @@ fun HomeScreen(
                 shape = RoundedCornerShape(14.dp)
             ) {
                 Text(
-                    text = if (authViewModel.isUserLoggedIn()) "Buscar coincidencia" else "Iniciar sesión para continuar",
+                    text = stringResource(if (authViewModel.isUserLoggedIn()) R.string.find_match else R.string.sign_in_to_continue),
                     fontSize = 17.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -329,13 +332,13 @@ private fun RoleOptionCard(
             )
             Column(modifier = Modifier.padding(start = 12.dp)) {
                 Text(
-                    text = role.title,
+                    text = stringResource(if (role == UserRole.SPEAKER) R.string.speaker_title else R.string.listener_title),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = role.description,
+                    text = stringResource(if (role == UserRole.SPEAKER) R.string.speaker_description else R.string.listener_description),
                     fontSize = 13.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

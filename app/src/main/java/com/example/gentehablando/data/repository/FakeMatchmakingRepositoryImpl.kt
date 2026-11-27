@@ -20,11 +20,12 @@ class FakeMatchmakingRepositoryImpl @Inject constructor() : MatchmakingRepositor
             emit(MatchmakingUiState.Searching(elapsed))
         }
 
-        val matchAlias = if (role == UserRole.SPEAKER) "Oyente_Amable_42" else "Hablante_Sincero_07"
+        val partnerRole = if (role == UserRole.SPEAKER) UserRole.LISTENER else UserRole.SPEAKER
         emit(
             MatchmakingUiState.Matched(
-                partnerAlias = matchAlias,
-                roomId = "room_fake_999"
+                partnerRole = partnerRole,
+                roomId = "room_fake_999", // i18n: technical Synthetic room ID; not a display alias.
+                isDemo = true
             )
         )
     }

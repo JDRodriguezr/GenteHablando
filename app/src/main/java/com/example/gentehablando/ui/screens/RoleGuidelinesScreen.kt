@@ -33,6 +33,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gentehablando.model.UserRole
 import kotlinx.coroutines.delay
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import com.example.gentehablando.R
 
 @Composable
 fun RoleGuidelinesScreen(
@@ -52,26 +55,22 @@ fun RoleGuidelinesScreen(
 
     val isSpeaker = role == UserRole.SPEAKER
 
-    val title = if (isSpeaker) "Antes de hablar..." else "Antes de escuchar..."
-    val subtitle = if (isSpeaker) {
-        "Al otro lado hay una persona voluntaria dispuesta a conversar. Ten en cuenta estas pautas:"
-    } else {
-        "Al otro lado hay una persona buscando un espacio seguro para conversar. Ten en cuenta estas pautas:"
-    }
+    val title = stringResource(if (isSpeaker) R.string.before_speaking else R.string.before_listening)
+    val subtitle = stringResource(if (isSpeaker) R.string.speaker_guidelines_intro else R.string.listener_guidelines_intro)
 
     val guidelines = if (isSpeaker) {
         listOf(
-            "1" to ("No es terapia profesional" to "La persona viene a acompañarte, no a resolver tus problemas ni a dar diagnósticos. El alivio está en la conexión humana."),
-            "2" to ("Toda emoción es bienvenida, la agresión no" to "Puedes sentir rabia, tristeza o frustración. Vuelca tu sentir sobre tu historia, sin atacar a quien te escucha."),
-            "3" to ("A tu propio ritmo" to "No tienes que comprimir todo en un solo mensaje. Tómate pausas para respirar y expresarte como necesites."),
-            "4" to ("Cuidado mutuo" to "Si sientes que la charla no te hace bien o cruza límites, tienes derecho a terminar la sesión con respeto en cualquier momento.")
+            R.string.speaker_guideline_1_title to R.string.speaker_guideline_1_body,
+            R.string.speaker_guideline_2_title to R.string.speaker_guideline_2_body,
+            R.string.speaker_guideline_3_title to R.string.speaker_guideline_3_body,
+            R.string.speaker_guideline_4_title to R.string.speaker_guideline_4_body
         )
     } else {
         listOf(
-            "1" to ("Escucha activa y sin juzgar" to "Tu presencia y atención libre de prejuicios es el mayor acompañamiento. Permite que la conversación fluya."),
-            "2" to ("Evita dar consejos no solicitados" to "El objetivo no es solucionar la vida de la otra persona, sino brindarle un espacio empático y libre de presión."),
-            "3" to ("Respeto e intimidad anónima" to "Todo lo compartido es confidencial. Mantén la amabilidad y respeta el anonimato de la sesión."),
-            "4" to ("Cuida tu propio bienestar" to "Si la conversación sobrepasa tus límites emocionales o resulta incómoda, puedes terminarla con amabilidad.")
+            R.string.listener_guideline_1_title to R.string.listener_guideline_1_body,
+            R.string.listener_guideline_2_title to R.string.listener_guideline_2_body,
+            R.string.listener_guideline_3_title to R.string.listener_guideline_3_body,
+            R.string.listener_guideline_4_title to R.string.listener_guideline_4_body
         )
     }
 
@@ -101,12 +100,11 @@ fun RoleGuidelinesScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            guidelines.forEach { (number, pair) ->
-                val (itemTitle, itemBody) = pair
+            guidelines.forEachIndexed { index, (itemTitle, itemBody) ->
                 GuidelineItem(
-                    number = number,
-                    title = itemTitle,
-                    body = itemBody
+                    number = stringResource(R.string.number, index + 1),
+                    title = stringResource(itemTitle),
+                    body = stringResource(itemBody)
                 )
             }
         }
@@ -124,7 +122,8 @@ fun RoleGuidelinesScreen(
             shape = RoundedCornerShape(14.dp)
         ) {
             Text(
-                text = if (isReady) "Entendido, buscar conversación" else "Lee con calma (${secondsLeft}s)...",
+                text = if (isReady) stringResource(R.string.guidelines_continue)
+                else pluralStringResource(R.plurals.guidelines_countdown, secondsLeft, secondsLeft),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )

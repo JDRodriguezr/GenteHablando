@@ -18,6 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gentehablando.R
 import com.example.gentehablando.domain.model.Resource
+import com.example.gentehablando.domain.model.AppError
+import com.example.gentehablando.ui.text.localizedMessage
 import com.example.gentehablando.viewmodel.AuthViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -65,16 +67,16 @@ fun LoginScreen(
             if (idToken != null) {
                 viewModel.signInWithGoogle(idToken)
             } else {
-                viewModel.setError("Error: El Token de Google vino vacío.")
+                viewModel.setError(AppError.EmptyGoogleToken)
             }
         } catch (e: ApiException) {
-            Log.e("Auth", "Google sign in failed", e)
-            val errorMessage = when (e.statusCode) {
-                10 -> "Error 10: Huella SHA-1 de Firebase incorrecta o faltante."
-                12501 -> "Cancelado por el usuario."
-                else -> "Error en el pop-up de Google: Código ${e.statusCode}"
+            Log.e("Auth", "Google sign in failed", e) // i18n: technical Diagnostic log tag/message; never displayed.
+            val error = when (e.statusCode) {
+                10 -> AppError.GoogleConfiguration
+                12501 -> AppError.GoogleCancelled
+                else -> AppError.GooglePopup(e.statusCode)
             }
-            viewModel.setError(errorMessage)
+            viewModel.setError(error)
         }
     }
 
@@ -86,14 +88,14 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "GenteHablando",
+            text = stringResource(R.string.app_name),
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Para mantener un espacio seguro y empático, es necesario iniciar sesión.",
+            text = stringResource(R.string.login_instructions),
             fontSize = 16.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -104,7 +106,7 @@ fun LoginScreen(
         if (uiState is Resource.Loading) {
             CircularProgressIndicator()
             Spacer(modifier = Modifier.height(16.dp))
-            Text("Iniciando sesión...")
+            Text(stringResource(R.string.signing_in))
         } else {
             Button(
                 onClick = {
@@ -121,7 +123,7 @@ fun LoginScreen(
                 )
             ) {
                 Text(
-                    text = "Continuar con Google",
+                    text = stringResource(R.string.continue_with_google),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -130,7 +132,7 @@ fun LoginScreen(
             if (uiState is Resource.Error) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = (uiState as Resource.Error).message,
+                    text = (uiState as Resource.Error).localizedMessage(),
                     color = MaterialTheme.colorScheme.error,
                     fontSize = 14.sp,
                     textAlign = TextAlign.Center
