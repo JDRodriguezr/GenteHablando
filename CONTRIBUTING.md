@@ -59,8 +59,8 @@ a first-time contributor's run in GitHub.
 | `Spanish and English localization` | Resource parity/format checks and production Kotlin literal checks, with regression tests |
 
 The Python tests live in `.github/scripts/test_gitflow_policy.py`.
-The Android unit-test task selects the debug variant; the existing unit suite
-currently contains only the template arithmetic test. A green run does not
+The Android unit-test task selects the debug variant; the unit suite includes
+quiz option-identity checks and the template arithmetic test. A green run does not
 imply coverage of authentication, matchmaking or voice calls.
 
 The Android runner requests Temurin JDK 17, Android platform 35 and Build Tools
@@ -138,8 +138,9 @@ variables, multiline strings and static text within templates. It does not
 infer language from a word list or rely only on Android's XML `HardcodedText`
 lint check.
 
-Keep brands and SDK client identifiers in default resources with justified
-`translatable="false"`, not duplicated English technical values. A genuinely
+Only `app_name` (the brand), `agora_app_id` and `default_web_client_id` may use
+`translatable="false"`; product labels cannot bypass the guard with this flag.
+Do not duplicate those technical entries in English resources. A genuinely
 technical Kotlin literal, such as a wire key, route or diagnostic log, may use
 `// l10n:technical <specific reason>` on its line or immediately before it.
 That narrow annotation is not an exemption for a file, class or product label.

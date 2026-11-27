@@ -12,7 +12,7 @@ class LocalizationTest(unittest.TestCase):
         self.root = Path(self.directory.name)
         self.write("app/src/main/res/values/strings.xml", """
             <resources>
-                <string name="brand" translatable="false">Brand</string>
+                <string name="app_name" translatable="false">Brand</string>
                 <string name="hello">Hola %1$s: %2$d</string>
             </resources>
         """)
@@ -114,6 +114,18 @@ class LocalizationTest(unittest.TestCase):
             <resources><string name="hello" translatable="false">Hello %1$s: %2$d</string></resources>
         """)
         self.assertTrue(any("cannot opt out" in error for error in check_project(self.root)))
+
+    def test_product_copy_cannot_bypass_guard_with_translatable_false(self):
+        self.write("app/src/main/res/values/more.xml", """
+            <resources><string name="new_title" translatable="false">New title</string></resources>
+        """)
+        self.assertTrue(any("cannot opt out" in error for error in check_project(self.root)))
+
+    def test_debug_copy_is_checked_but_test_fixtures_are_not(self):
+        self.write("app/src/test/java/Fixture.kt", 'val expected = "Test-only text"')
+        self.assertEqual([], check_project(self.root))
+        self.write("app/src/debug/java/Screen.kt", 'Text("Untranslated preview title")')
+        self.assertTrue(any("hardcoded text" in error for error in check_project(self.root)))
 
     def test_default_language_qualified_copy_requires_english_counterpart(self):
         self.write("app/src/main/res/values-night/strings.xml", """

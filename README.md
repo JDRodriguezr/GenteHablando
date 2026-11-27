@@ -141,6 +141,20 @@ Version 0.1.0 is an experimental source preview. See the [release history](https
 
 ## Verification limits
 
-Actions passed the GitFlow policy, Android debug unit tests, lint and APK generation for the checked preview. The Android unit suite includes focused quiz option-identity checks and the template arithmetic test. Physical-device checks cover the signed-out screens and navigation described above; the architecture report contains proposed acceptance checks, not completed integration tests.
+[Android run 45920110080](https://github.com/JDRodriguezr/GenteHablando/actions/runs/45920110080)
+passed compilation, four debug unit tests, lint and APK generation for localization
+source `d3f2cf3a948292edf094a583d097d51a880fec7c`.
+[Localization run 45920109894](https://github.com/JDRodriguezr/GenteHablando/actions/runs/45920109894)
+passed its omission/format/source-literal regression tests and the bilingual
+catalog check. The unit suite includes quiz option-identity checks and the
+template arithmetic test.
+
+The CI APK contains Spanish default and English course, screen and error
+resources. Physical-device checks still cover only the earlier signed-out
+preview described above. The new debug APK has a different signing certificate
+from that installed preview; we did not uninstall the app or erase its data to
+replace it. English/Spanish runtime locale switching and translated layouts
+remain unverified. The architecture report contains proposed acceptance checks,
+not completed integration tests.
 
 Google sign-in, Firebase rules, end-to-end conversations, feedback retention, voice isolation, accessibility conformance and performance remain unverified. Do not treat this prototype as a stable release or evidence of operational readiness.

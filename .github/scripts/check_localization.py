@@ -6,6 +6,11 @@ import xml.etree.ElementTree as ET
 
 
 RESOURCE_TYPES = {"string", "string-array", "array", "plurals"}
+TECHNICAL_RESOURCES = {
+    ("string", "app_name"),
+    ("string", "agora_app_id"),
+    ("string", "default_web_client_id"),
+}
 FORMAT = re.compile(
     r"%(?:(\d+)\$)?([-#+ 0,(<]*)(?:\d+)?(?:\.\d+)?([tT])?([a-zA-Z%])"
 )
@@ -61,6 +66,8 @@ def read_resources(folder):
             if key in entries:
                 raise ValueError(f"{path}: duplicate {kind}/{name}")
             translated = element.get("translatable", "true") != "false"
+            if not translated and key not in TECHNICAL_RESOURCES:
+                raise ValueError(f"{path}: {kind}/{name} cannot opt out of translation")
             formatted = element.get("formatted", "true") != "false"
             if kind == "string":
                 values = {"value": "".join(element.itertext()).strip()}
@@ -291,11 +298,14 @@ def check_project(root):
                 errors.extend(compare_resources(source, english, english_folder.name))
             except (ValueError, ET.ParseError) as error:
                 errors.append(str(error))
-    for path in sorted((root / "app" / "src" / "main").rglob("*.kt")):
-        try:
-            errors.extend(check_kotlin(path))
-        except ValueError as error:
-            errors.append(f"{path}: {error}")
+    for source_set in sorted((root / "app" / "src").iterdir()):
+        if not source_set.is_dir() or source_set.name.startswith(("test", "androidTest")):
+            continue
+        for path in sorted(source_set.rglob("*.kt")):
+            try:
+                errors.extend(check_kotlin(path))
+            except ValueError as error:
+                errors.append(f"{path}: {error}")
     return errors
 
 
