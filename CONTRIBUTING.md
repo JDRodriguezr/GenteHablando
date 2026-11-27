@@ -56,6 +56,7 @@ a first-time contributor's run in GitHub.
 | --- | --- |
 | `GitFlow policy` | Python standard-library policy tests and PR metadata validation |
 | `Android CI` | `:app:testDebugUnitTest`, `:app:lintDebug`, `:app:assembleDebug` |
+| `Spanish and English localization` | Resource parity/format checks and production Kotlin literal checks, with regression tests |
 
 The Python tests live in `.github/scripts/test_gitflow_policy.py`.
 The Android unit-test task selects the debug variant; the existing unit suite
@@ -110,6 +111,48 @@ dynamic voice rooms, microphone consent or device behavior.
 Keep required Firebase client configuration; do not add private signing keys,
 service-account credentials or production tokens to make CI pass.
 
+## Spanish and English product text
+
+Keep Spanish in `app/src/main/res/values` and its English counterpart in
+`values-en`. Android chooses the language from the device or, on supported Android
+versions, the app's language setting. Keep both locales' XML resource names and
+types aligned, including copy split across `strings.xml` and `courses.xml`.
+
+Use `stringResource`/`pluralStringResource` in Compose. Keep domain values and
+persisted course, question, role and answer identifiers independent of display
+language. Do not translate user messages or user-provided names. Keep option
+ordering and correct-answer indices equivalent in both languages.
+
+Every new string, array item and plural must have meaningful English copy.
+Match numbered format arguments, such as `%1$s` and `%2$d`, in both locales;
+reordering those arguments is valid. Mark literal percentages with
+`formatted="false"` when the resource is not a format string. Keep array lengths
+and plural quantities consistent. Default-language qualified resources such as
+`values-night` need the matching `values-en-night` copy.
+
+The `Localization` workflow runs the focused tests and
+`.github/scripts/check_localization.py` on PRs, feature/release pushes and manual
+dispatch. It rejects missing/extra/empty entries, incompatible resource shapes
+or formatters, and alphabetic production Kotlin string literals, including
+variables, multiline strings and static text within templates. It does not
+infer language from a word list or rely only on Android's XML `HardcodedText`
+lint check.
+
+Keep brands and SDK client identifiers in default resources with justified
+`translatable="false"`, not duplicated English technical values. A genuinely
+technical Kotlin literal, such as a wire key, route or diagnostic log, may use
+`// l10n:technical <specific reason>` on its line or immediately before it.
+That narrow annotation is not an exemption for a file, class or product label.
+Do not copy credentials into an exception list. Empty/input-only values,
+numeric separators and interpolation-only user content do not require invented
+translations.
+
+The guard checks source literals and resource structure, not translation quality
+or arbitrary text constructed from character codes, remote/user data or generated
+source. Review English/Spanish meaning and runtime locale changes separately.
+Review technical exemptions and changes to the guard itself; native branch
+protection and maintainer review remain necessary.
+
 ## Administrator setup
 
 Only a repository administrator can apply the following settings.
@@ -122,7 +165,8 @@ protection for both `main` and `develop`:
 
 1. Require pull requests, at least one approval, and resolution of review
    conversations. Dismiss stale approvals after new commits.
-2. Require `GitFlow policy` and `Android CI` from GitHub Actions, and require
+2. Require `GitFlow policy`, `Android CI` and `Spanish and English localization`
+   from GitHub Actions, and require
    branches to be up to date before merging.
 3. Block force pushes and branch deletion. Restrict direct pushes and bypasses,
    including administrator bypasses where the repository plan supports it.

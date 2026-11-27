@@ -1,0 +1,30 @@
+name: Localization
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited, ready_for_review]
+  push:
+    branches: [main, develop, 'feature/**', 'release/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  localization:
+    name: Spanish and English localization
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Test translation enforcement
+        run: python3 -m unittest discover --start-directory .github/scripts --pattern test_localization.py --verbose
+      - name: Check resources and production Kotlin
+        run: python3 .github/scripts/check_localization.py

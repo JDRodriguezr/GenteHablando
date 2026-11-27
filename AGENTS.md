@@ -8,6 +8,11 @@ for commands, CI checks and release preparation, and
 
 - Write commits, PR titles/descriptions, documentation and new project-facing prose
   in English. Preserve existing product localization and technical identifiers.
+- Keep application-owned copy in Spanish default Android resources and matching
+  English resources. Include courses, answers, accessibility names, errors and demo
+  copy; preserve stable IDs and user-written content. Read the localization rules
+  in `CONTRIBUTING.md` before adding text. Do not bypass the localization check by
+  declaring product copy non-translatable or disguising it as a technical literal.
 - Start ordinary work from `develop` on `feature/<short-kebab-case-name>`.
   Do not include a username or add another path segment.
 - Open PRs using only these combinations:
@@ -71,6 +76,9 @@ Hilt, Firebase and Agora. Keep changes within the existing boundaries:
 - Use the GitFlow policy tests, Android debug unit tests, Android lint and debug
   APK build in Actions. Keep failures visible; do not add placeholder checks,
   disable lint rules wholesale or suppress unsupported toolchain warnings.
+- Run the localization guard and its regression tests in Actions. Keep both
+  languages complete and formatter arguments, array ordering and plural meanings
+  consistent; Android lint alone does not catch hardcoded Compose/course text.
 - Do not run local Gradle builds/tests or install local build tools for this
   workflow. Use CI for build validation and an authorized physical Android
   device for runtime checks; do not introduce an emulator requirement.
