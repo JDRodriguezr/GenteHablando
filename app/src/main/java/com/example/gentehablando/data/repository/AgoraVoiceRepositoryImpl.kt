@@ -33,7 +33,7 @@ class AgoraVoiceRepositoryImpl @Inject constructor(
     private val rtcEventHandler = object : IRtcEngineEventHandler() {
         override fun onJoinChannelSuccess(channel: String?, uid: Int, elapsed: Int) {
             super.onJoinChannelSuccess(channel, uid, elapsed)
-            Log.d("AgoraVoice", "Conectado al canal de voz: $channel con uid local $uid")
+            Log.d("AgoraVoice", "Conectado al canal de voz: $channel con uid local $uid") // i18n: technical Diagnostic log tag/message; never displayed.
             localUid = uid // Agora nos confirma cuál fue nuestro ID numérico aleatorio
             // Cuando entramos exitosamente, aplicamos el estado inicial (silenciado)
             rtcEngine?.muteLocalAudioStream(isMutedFlow.value)
@@ -41,7 +41,7 @@ class AgoraVoiceRepositoryImpl @Inject constructor(
         
         override fun onError(err: Int) {
             super.onError(err)
-            Log.e("AgoraVoice", "Error en Agora SDK: $err")
+            Log.e("AgoraVoice", "Error en Agora SDK: $err") // i18n: technical Diagnostic log tag/message; never displayed.
         }
 
         override fun onAudioVolumeIndication(speakers: Array<out AudioVolumeInfo>?, totalVolume: Int) {
@@ -94,17 +94,20 @@ class AgoraVoiceRepositoryImpl @Inject constructor(
             )
             
             // FILTROS AVANZADOS DE AUDIO (Cancelación de ruido y eco)
+            // i18n: technical Agora SDK parameter JSON; not display content.
             rtcEngine?.setParameters("{\"che.audio.enable.ns\":true}") // Habilitar Supresión de Ruido
+            // i18n: technical Agora SDK parameter JSON; not display content.
             rtcEngine?.setParameters("{\"che.audio.enable.aec\":true}") // Habilitar Cancelación de Eco
+            // i18n: technical Agora SDK parameter JSON; not display content.
             rtcEngine?.setParameters("{\"che.audio.enable.agc\":true}") // Habilitar Control de Ganancia Automática (nivela el volumen)
             
             // Filtro de Inteligencia Artificial para supresión de ruido fuerte (AINS - AI Noise Suppression)
             // Esto elimina ruido de teclado, tráfico, ventiladores, manteniendo solo la voz humana
-            rtcEngine?.setParameters("{\"che.audio.ains_mode\": 1}") 
+            rtcEngine?.setParameters("{\"che.audio.ains_mode\": 1}") // i18n: technical Agora SDK parameter JSON; not display content.
 
-            Log.d("AgoraVoice", "Motor de Agora inicializado con Filtros de Audio AINS. App ID: ${config.mAppId.take(5)}...")
+            Log.d("AgoraVoice", "Motor de Agora inicializado con Filtros de Audio AINS. App ID: ${config.mAppId.take(5)}...") // i18n: technical Diagnostic log tag/message; never displayed.
         } catch (e: Exception) {
-            Log.e("AgoraVoice", "Fallo crítico inicializando Agora", e)
+            Log.e("AgoraVoice", "Fallo crítico inicializando Agora", e) // i18n: technical Diagnostic log tag/message; never displayed.
         }
     }
 
@@ -127,11 +130,12 @@ class AgoraVoiceRepositoryImpl @Inject constructor(
         // --- INICIO MODO PRUEBA DE TOKEN ---
         // Generamos un ID pseudo-aleatorio para cada dispositivo para que ambos puedan entrar.
         val randomUid = (1..9999).random() 
+        // i18n: technical Existing Agora test credential; consumed by the SDK, never displayed.
         val token = "007eJxTYFj3+d3vwuePV36+9415s3GN9RPexYsXfryhEB1X8FUv9NUqBYYUEyNTkyRzM8vURCDTwDwx0cLUMtEw0cLEPCXJxNDILuBXVkMgI8N070UsTAyMYAjiczMUJ+YkxhcUlaYmJTIwMMElGBkMAbmJJ04="
         
         // 2. UNIRSE AL CANAL CON EL UID:
-        val joinResult = rtcEngine?.joinChannel(token, "sala_prueba", randomUid, options)
-        Log.d("AgoraVoice", "Intentando unirse a sala_prueba con UID $randomUid. Código de resultado: $joinResult")
+        val joinResult = rtcEngine?.joinChannel(token, "sala_prueba", randomUid, options) // i18n: technical Existing shared test-channel name; protocol identity, not a display label.
+        Log.d("AgoraVoice", "Intentando unirse a sala_prueba con UID $randomUid. Código de resultado: $joinResult") // i18n: technical Diagnostic log tag/message; never displayed.
         // --- FIN MODO PRUEBA DE TOKEN ---
         
         isMutedFlow.value = true
@@ -168,16 +172,16 @@ class AgoraVoiceRepositoryImpl @Inject constructor(
     override fun setAwaNoiseSuppression(enabled: Boolean) {
         try {
             if (enabled) {
-                rtcEngine?.setParameters("{\"che.audio.enable.ns\":true}")
-                rtcEngine?.setParameters("{\"che.audio.ains_mode\":1}")
-                Log.d("AgoraVoice", "Filtro de Ruido IA: ACTIVADO")
+                rtcEngine?.setParameters("{\"che.audio.enable.ns\":true}") // i18n: technical Agora SDK parameter JSON; not display content.
+                rtcEngine?.setParameters("{\"che.audio.ains_mode\":1}") // i18n: technical Agora SDK parameter JSON; not display content.
+                Log.d("AgoraVoice", "Filtro de Ruido IA: ACTIVADO") // i18n: technical Diagnostic log tag/message; never displayed.
             } else {
-                rtcEngine?.setParameters("{\"che.audio.enable.ns\":false}")
-                rtcEngine?.setParameters("{\"che.audio.ains_mode\":0}")
-                Log.d("AgoraVoice", "Filtro de Ruido IA: DESACTIVADO")
+                rtcEngine?.setParameters("{\"che.audio.enable.ns\":false}") // i18n: technical Agora SDK parameter JSON; not display content.
+                rtcEngine?.setParameters("{\"che.audio.ains_mode\":0}") // i18n: technical Agora SDK parameter JSON; not display content.
+                Log.d("AgoraVoice", "Filtro de Ruido IA: DESACTIVADO") // i18n: technical Diagnostic log tag/message; never displayed.
             }
         } catch (e: Exception) {
-            Log.e("AgoraVoice", "Error cambiando estado de filtro de ruido", e)
+            Log.e("AgoraVoice", "Error cambiando estado de filtro de ruido", e) // i18n: technical Diagnostic log tag/message; never displayed.
         }
     }
 }

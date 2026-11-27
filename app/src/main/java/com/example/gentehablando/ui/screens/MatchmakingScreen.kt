@@ -26,6 +26,9 @@ import androidx.compose.ui.unit.sp
 import com.example.gentehablando.model.UserRole
 import com.example.gentehablando.viewmodel.MatchmakingUiState
 import com.example.gentehablando.viewmodel.MatchmakingViewModel
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import com.example.gentehablando.R
 
 @Composable
 fun MatchmakingScreen(
@@ -61,7 +64,7 @@ fun MatchmakingScreen(
 
         when (val state = uiState) {
             is MatchmakingUiState.Idle -> {
-                Text(text = "Preparando búsqueda...", fontSize = 16.sp)
+                Text(text = stringResource(R.string.preparing_search), fontSize = 16.sp)
             }
 
             is MatchmakingUiState.Searching -> {
@@ -72,17 +75,14 @@ fun MatchmakingScreen(
                     )
                     Spacer(modifier = Modifier.height(28.dp))
                     Text(
-                        text = if (role == UserRole.SPEAKER)
-                            "Buscando a alguien disponible para escucharte..."
-                        else
-                            "Buscando a alguien que necesite hablar...",
+                        text = stringResource(if (role == UserRole.SPEAKER) R.string.searching_listener else R.string.searching_speaker),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
                         textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = "Tiempo en espera: ${state.secondsWaiting}s",
+                        text = pluralStringResource(R.plurals.waiting_time, state.secondsWaiting, state.secondsWaiting),
                         fontSize = 14.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -98,14 +98,24 @@ fun MatchmakingScreen(
                     )
                     Spacer(modifier = Modifier.height(28.dp))
                     Text(
-                        text = "¡Conexión encontrada!",
+                        text = stringResource(R.string.match_found),
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Ingresando a la sala con: ${state.partnerAlias}...",
+                        text = stringResource(
+                            R.string.entering_room,
+                            stringResource(
+                                when {
+                                    state.isDemo && state.partnerRole == UserRole.LISTENER -> R.string.demo_listener_alias
+                                    state.isDemo -> R.string.demo_speaker_alias
+                                    state.partnerRole == UserRole.LISTENER -> R.string.listener_label
+                                    else -> R.string.speaker_label
+                                }
+                            )
+                        ),
                         fontSize = 15.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -123,7 +133,7 @@ fun MatchmakingScreen(
                 .height(52.dp),
             shape = RoundedCornerShape(14.dp)
         ) {
-            Text("Cancelar búsqueda")
+            Text(stringResource(R.string.cancel_search))
         }
     }
 }

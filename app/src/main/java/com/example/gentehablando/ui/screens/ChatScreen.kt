@@ -47,6 +47,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gentehablando.domain.model.ChatMessage
 import com.example.gentehablando.viewmodel.ChatViewModel
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import com.example.gentehablando.R
+import com.example.gentehablando.ui.text.displayText
+import android.text.format.DateFormat
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -119,8 +125,8 @@ fun ChatScreen(
     if (showExitDialog) {
         AlertDialog(
             onDismissRequest = { showExitDialog = false },
-            title = { Text(text = "Salir de la conversación") },
-            text = { Text(text = "¿Deseas finalizar y volver al menú principal?") },
+            title = { Text(text = stringResource(R.string.leave_conversation)) },
+            text = { Text(text = stringResource(R.string.leave_conversation_question)) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -130,12 +136,12 @@ fun ChatScreen(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                 ) {
-                    Text("Sí, salir")
+                    Text(stringResource(R.string.yes_leave))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showExitDialog = false }) {
-                    Text("Cancelar")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -145,11 +151,11 @@ fun ChatScreen(
     if (showInactivityWarning) {
         AlertDialog(
             onDismissRequest = { viewModel.extendSession() },
-            title = { Text(text = "¿Sigues ahí?") },
-            text = { Text(text = "La sala se cerrará por inactividad en $inactivitySecondsLeft segundos.") },
+            title = { Text(text = stringResource(R.string.still_there)) },
+            text = { Text(text = pluralStringResource(R.plurals.inactivity_warning, inactivitySecondsLeft, inactivitySecondsLeft)) },
             confirmButton = {
                 Button(onClick = { viewModel.extendSession() }) {
-                    Text("Sí, seguir conversando")
+                    Text(stringResource(R.string.keep_talking))
                 }
             },
             dismissButton = {
@@ -160,7 +166,7 @@ fun ChatScreen(
                     },
                     colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
                 ) {
-                    Text("Finalizar ahora")
+                    Text(stringResource(R.string.end_now))
                 }
             }
         )
@@ -188,9 +194,9 @@ fun ChatScreen(
                     }
                     Text(
                         text = when {
-                            !isRoomActive -> "Sesión finalizada por el compañero"
-                            isPartnerTyping -> "Escribiendo..."
-                            else -> "En línea"
+                            !isRoomActive -> stringResource(R.string.partner_ended_session)
+                            isPartnerTyping -> stringResource(R.string.typing)
+                            else -> stringResource(R.string.online)
                         },
                         fontSize = 12.sp,
                         color = when {
@@ -206,7 +212,7 @@ fun ChatScreen(
                     onClick = { showExitDialog = true },
                     shape = RoundedCornerShape(12.dp)
                 ) {
-                    Text(if (isRoomActive) "Finalizar" else "Salir", fontSize = 13.sp)
+                    Text(stringResource(if (isRoomActive) R.string.end_session else R.string.leave), fontSize = 13.sp)
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
@@ -234,7 +240,7 @@ fun ChatScreen(
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = if (isMuted) "🎙️ Micrófono silenciado" else "🎤 Canal de voz activo",
+                        text = stringResource(if (isMuted) R.string.microphone_muted else R.string.voice_channel_active),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Medium,
                         color = if (isMuted) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
@@ -259,7 +265,7 @@ fun ChatScreen(
                         .padding(horizontal = 12.dp, vertical = 6.dp)
                 ) {
                     Text(
-                        text = if (isMuted) "Activar Mic" else "Mutear",
+                        text = stringResource(if (isMuted) R.string.unmute else R.string.mute),
                         color = Color.White,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold
@@ -277,7 +283,7 @@ fun ChatScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Aislamiento de voz con IA",
+                    text = stringResource(R.string.voice_isolation),
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -299,7 +305,7 @@ fun ChatScreen(
                     .padding(horizontal = 16.dp, vertical = 10.dp)
             ) {
                 Text(
-                    text = "⚠️ Tu compañero ha finalizado la sesión. Puedes revisar los mensajes anteriores. Estás solo en la sala.",
+                    text = stringResource(R.string.partner_left_notice),
                     fontSize = 13.sp,
                     color = MaterialTheme.colorScheme.onErrorContainer,
                     fontWeight = FontWeight.Medium
@@ -320,7 +326,7 @@ fun ChatScreen(
                 val nextMessage = messages.getOrNull(index + 1)
 
                 val isNextFromSameSender = nextMessage != null && nextMessage.isFromMe == currentMessage.isFromMe
-                val isSameMinute = nextMessage != null && nextMessage.timestamp == currentMessage.timestamp
+                val isSameMinute = nextMessage != null && nextMessage.timestamp / 60_000 == currentMessage.timestamp / 60_000
                 val isGroupedWithNext = isNextFromSameSender && isSameMinute
                 val showTimestamp = !isGroupedWithNext
 
@@ -337,7 +343,7 @@ fun ChatScreen(
             if (isPartnerTyping && isRoomActive) {
                 item {
                     Text(
-                        text = "$partnerAlias está escribiendo...",
+                        text = stringResource(R.string.partner_typing, partnerAlias),
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.outline,
                         modifier = Modifier.padding(start = 8.dp, top = 4.dp)
@@ -360,7 +366,7 @@ fun ChatScreen(
                     viewModel.onInputTextChanged(it)
                 },
                 placeholder = {
-                    Text(if (isRoomActive) "Escribe un mensaje..." else "La conversación ha finalizado")
+                    Text(stringResource(if (isRoomActive) R.string.message_placeholder else R.string.conversation_ended))
                 },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(24.dp),
@@ -376,7 +382,7 @@ fun ChatScreen(
                 shape = RoundedCornerShape(24.dp),
                 enabled = isRoomActive && inputText.isNotBlank()
             ) {
-                Text("Enviar")
+                Text(stringResource(R.string.send))
             }
         }
     }
@@ -432,7 +438,7 @@ private fun MessageBubble(
                 .padding(horizontal = 14.dp, vertical = 9.dp)
         ) {
             Text(
-                text = message.text,
+                text = message.displayText(),
                 color = textColor,
                 fontSize = 15.sp
             )
@@ -441,7 +447,7 @@ private fun MessageBubble(
         if (showTimestamp) {
             Spacer(modifier = Modifier.height(2.dp))
             Text(
-                text = message.timestamp,
+                text = DateFormat.getTimeFormat(androidx.compose.ui.platform.LocalContext.current).format(Date(message.timestamp)),
                 fontSize = 11.sp,
                 color = MaterialTheme.colorScheme.outline,
                 modifier = Modifier.padding(horizontal = 4.dp)

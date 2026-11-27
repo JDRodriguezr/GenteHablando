@@ -20,6 +20,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gentehablando.domain.model.Resource
 import com.example.gentehablando.viewmodel.ProfileViewModel
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import com.example.gentehablando.R
+import com.example.gentehablando.ui.text.localizedMessage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,10 +47,10 @@ fun ProfileScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Mi Perfil") },
+                title = { Text(stringResource(R.string.profile_title)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -68,7 +72,7 @@ fun ProfileScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Person,
-                    contentDescription = "Avatar",
+                    contentDescription = stringResource(R.string.avatar),
                     modifier = Modifier.size(60.dp),
                     tint = MaterialTheme.colorScheme.onPrimaryContainer
                 )
@@ -86,7 +90,7 @@ fun ProfileScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Tu Reputación",
+                        text = stringResource(R.string.reputation_title),
                         fontSize = 16.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -94,20 +98,25 @@ fun ProfileScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             imageVector = Icons.Default.Star,
-                            contentDescription = "Estrella",
+                            contentDescription = stringResource(R.string.star),
                             tint = Color(0xFFFFC107),
                             modifier = Modifier.size(32.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = if (profile.totalRatings > 0) String.format("%.1f", profile.reputationScore) else "Nuevo",
+                            text = if (profile.totalRatings > 0) stringResource(R.string.reputation_score, profile.reputationScore)
+                            else stringResource(R.string.new_user),
                             fontSize = 28.sp,
                             fontWeight = FontWeight.Bold
                         )
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Basado en ${profile.totalRatings} conversaciones",
+                        text = pluralStringResource(
+                            R.plurals.reputation_conversations,
+                            profile.totalRatings.coerceIn(0, Int.MAX_VALUE.toLong()).toInt(),
+                            profile.totalRatings
+                        ),
                         fontSize = 14.sp,
                         color = MaterialTheme.colorScheme.outline
                     )
@@ -131,7 +140,7 @@ fun ProfileScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Progreso de Academia",
+                        text = stringResource(R.string.academy_progress),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
@@ -144,13 +153,13 @@ fun ProfileScreen(
                         // Cursos Completados
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                text = "$completedCount/$totalCourses",
+                                text = stringResource(R.string.score_fraction, completedCount, totalCourses),
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.primary
                             )
                             Text(
-                                text = "Completados",
+                                text = stringResource(R.string.completed_courses),
                                 fontSize = 12.sp,
                                 color = MaterialTheme.colorScheme.onSecondaryContainer
                             )
@@ -160,7 +169,7 @@ fun ProfileScreen(
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(
-                                    text = "$perfectCount",
+                                    text = stringResource(R.string.number, perfectCount),
                                     fontSize = 24.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color(0xFFFFC107) // Dorado
@@ -168,7 +177,7 @@ fun ProfileScreen(
                                 Icon(Icons.Default.Star, contentDescription = null, tint = Color(0xFFFFC107), modifier = Modifier.size(24.dp))
                             }
                             Text(
-                                text = "Perfectos",
+                                text = stringResource(R.string.perfect_courses),
                                 fontSize = 12.sp,
                                 color = MaterialTheme.colorScheme.onSecondaryContainer
                             )
@@ -178,7 +187,7 @@ fun ProfileScreen(
                     if (completedCount == totalCourses && perfectCount == totalCourses && totalCourses > 0) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            text = "¡Completionist Master! \uD83C\uDFC6",
+                            text = stringResource(R.string.completionist_master),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFF4CAF50)
@@ -195,7 +204,7 @@ fun ProfileScreen(
             }
             if (actionState is Resource.Error) {
                 Text(
-                    text = (actionState as Resource.Error).message,
+                    text = (actionState as Resource.Error).localizedMessage(),
                     color = MaterialTheme.colorScheme.error,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(bottom = 16.dp)
@@ -213,7 +222,7 @@ fun ProfileScreen(
             ) {
                 Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Cerrar Sesión", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.sign_out), fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -228,7 +237,7 @@ fun ProfileScreen(
             ) {
                 Icon(Icons.Default.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Eliminar Cuenta", color = MaterialTheme.colorScheme.error, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.delete_account), color = MaterialTheme.colorScheme.error, fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -236,18 +245,18 @@ fun ProfileScreen(
         if (showLogoutDialog) {
             AlertDialog(
                 onDismissRequest = { showLogoutDialog = false },
-                title = { Text("Cerrar Sesión") },
-                text = { Text("¿Estás seguro de que deseas salir?") },
+                title = { Text(stringResource(R.string.sign_out)) },
+                text = { Text(stringResource(R.string.sign_out_question)) },
                 confirmButton = {
                     TextButton(onClick = {
                         showLogoutDialog = false
                         viewModel.signOut()
                     }) {
-                        Text("Sí, salir")
+                        Text(stringResource(R.string.yes_leave))
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showLogoutDialog = false }) { Text("Cancelar") }
+                    TextButton(onClick = { showLogoutDialog = false }) { Text(stringResource(R.string.cancel)) }
                 }
             )
         }
@@ -255,8 +264,8 @@ fun ProfileScreen(
         if (showDeleteDialog) {
             AlertDialog(
                 onDismissRequest = { showDeleteDialog = false },
-                title = { Text("Eliminar Cuenta") },
-                text = { Text("Esta acción es irreversible. Se borrará tu reputación y tu acceso. ¿Deseas continuar?") },
+                title = { Text(stringResource(R.string.delete_account)) },
+                text = { Text(stringResource(R.string.delete_account_question)) },
                 confirmButton = {
                     Button(
                         onClick = {
@@ -265,11 +274,11 @@ fun ProfileScreen(
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                     ) {
-                        Text("Eliminar definitivamente")
+                        Text(stringResource(R.string.delete_permanently))
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showDeleteDialog = false }) { Text("Cancelar") }
+                    TextButton(onClick = { showDeleteDialog = false }) { Text(stringResource(R.string.cancel)) }
                 }
             )
         }

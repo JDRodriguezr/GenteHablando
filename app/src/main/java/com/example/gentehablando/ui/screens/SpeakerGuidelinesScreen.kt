@@ -33,6 +33,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import com.example.gentehablando.R
 
 @Composable
 fun SpeakerGuidelinesScreen(
@@ -62,14 +65,14 @@ fun SpeakerGuidelinesScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             Text(
-                text = "Antes de hablar...",
+                text = stringResource(R.string.before_speaking),
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Al otro lado hay una persona voluntaria dispuesta a escucharte. Ten en cuenta estas pautas:",
+                text = stringResource(R.string.legacy_speaker_intro),
                 fontSize = 15.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -77,27 +80,27 @@ fun SpeakerGuidelinesScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             GuidelineItem(
-                number = "1",
-                title = "No es terapia profesional",
-                body = "La persona viene a acompañarte, no a resolver tus problemas ni a dar diagnósticos. El alivio está en expresarte."
+                number = stringResource(R.string.number, 1),
+                title = stringResource(R.string.speaker_guideline_1_title),
+                body = stringResource(R.string.legacy_speaker_guideline_1)
             )
 
             GuidelineItem(
-                number = "2",
-                title = "Toda emoción es bienvenida, la agresión no",
-                body = "Puedes sentir rabia, tristeza o frustración profunda. Vuelca tu sentir sobre tu historia, sin atacar a quien te escucha."
+                number = stringResource(R.string.number, 2),
+                title = stringResource(R.string.speaker_guideline_2_title),
+                body = stringResource(R.string.legacy_speaker_guideline_2)
             )
 
             GuidelineItem(
-                number = "3",
-                title = "A tu propio ritmo",
-                body = "No tienes que comprimir todo en un solo mensaje. Tómate pausas para respirar y escribir lo que necesitas."
+                number = stringResource(R.string.number, 3),
+                title = stringResource(R.string.speaker_guideline_3_title),
+                body = stringResource(R.string.legacy_speaker_guideline_3)
             )
 
             GuidelineItem(
-                number = "4",
-                title = "Cuidado mutuo",
-                body = "Si sientes que la charla no te hace bien o cruza límites, tienes derecho a terminar la sesión con respeto en cualquier momento."
+                number = stringResource(R.string.number, 4),
+                title = stringResource(R.string.speaker_guideline_4_title),
+                body = stringResource(R.string.speaker_guideline_4_body)
             )
         }
 
@@ -115,7 +118,8 @@ fun SpeakerGuidelinesScreen(
             shape = RoundedCornerShape(14.dp)
         ) {
             Text(
-                text = if (isReady) "Entendido, buscar conversación" else "Lee con calma (${secondsLeft}s)...",
+                text = if (isReady) stringResource(R.string.guidelines_continue)
+                else pluralStringResource(R.plurals.guidelines_countdown, secondsLeft, secondsLeft),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )

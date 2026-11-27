@@ -7,7 +7,7 @@ package com.example.gentehablando.domain.model
  */
 sealed interface Resource<out T> {
     data class Success<out T>(val data: T) : Resource<T>
-    data class Error(val message: String, val cause: Throwable? = null) : Resource<Nothing>
+    data class Error(val reason: AppError, val cause: Throwable? = null) : Resource<Nothing>
     object Loading : Resource<Nothing>
     object Idle : Resource<Nothing>
 }

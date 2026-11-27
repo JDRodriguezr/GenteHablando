@@ -1,8 +1,8 @@
 # GenteHablando
 
-GenteHablando is an Android prototype for peer conversations. You choose whether to speak or listen, read the guidelines for that role, and request a conversation. The app also includes an "Academia" with short lessons and quizzes about listening, emotions, and communication.
+GenteHablando is an Android prototype for peer conversations. You choose whether to speak or listen, read the guidelines for that role, and request a conversation. The app also includes an academy with short lessons and quizzes about listening, emotions, and communication.
 
-The product UI is in Spanish. This repository's documentation and contribution workflow use English.
+The product UI supports Spanish and English. This repository's documentation and contribution workflow use English.
 
 **Prototype status:** the source includes Firebase-backed messaging and matchmaking, Google sign-in, and an Agora voice adapter. These integrations do not establish production readiness. The voice adapter currently joins a shared test channel instead of the requested conversation room. Do not use this build for private conversations.
 
@@ -97,9 +97,43 @@ The matchmaking contract currently imports a ViewModel UI state, so that boundar
 
 ## Contribution workflow
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md). Use `feature/*` branches based on `develop`, with PRs targeting `develop`. Prepare releases on `release/x.y.z` branches targeting `main`, then synchronize `main` back to `develop`. Keep commits and PR descriptions short and in English, and preserve the Spanish product localization.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md). Use `feature/*` branches based on `develop`, with PRs targeting `develop`. Prepare releases on `release/x.y.z` branches targeting `main`, then synchronize `main` back to `develop`. Keep commits and PR descriptions short and in English, and maintain both product languages.
 
 Merging, publishing tags or releases, and deploying require approval for that work. GitFlow checks validate PR branch relationships; an administrator must enable branch protection to restrict direct pushes and require reviews. The [administrator checklist](CONTRIBUTING.md#administrator-setup) does not imply that those protections are active.
+
+## Product languages
+
+Android selects the language through its native resources. Spanish lives in
+`app/src/main/res/values/`; English lives in `values-en/`. Spanish remains the
+default resource fallback. Regional English locales use the English resources.
+On Android 13 and later, the system's app-language settings list Spanish and
+English; older versions follow the device's language preferences. There is no
+in-app language picker or automatic translation service.
+
+Both languages cover the screens, role guidelines, dialogs, accessibility
+labels, errors, counters, bundled lessons and quizzes. The UI resolves resources
+at display time, including retained error reasons and generated demo messages.
+Course IDs, question identities, option indices, progress keys, roles and
+Firebase wire values remain language-independent. Quiz grading uses option
+identity, not translated answer text. Message times use the selected locale and
+the system's 12/24-hour preference. The app does not translate user messages,
+appeal text, issue descriptions or identifiers.
+SDK sign-in/ad screens and remote user content are outside the bundled
+translation catalog.
+
+Add new product text to both resource directories with matching names and types.
+Keep array options in the same identity order, provide the required plural
+quantities and retain numbered format arguments. Only the brand name and SDK
+client IDs use `translatable="false"`. Technical Kotlin literals need a narrow
+`// i18n: technical <specific reason>` comment; do not use this exception for
+product copy, generated replies or aliases. See [CONTRIBUTING.md](CONTRIBUTING.md)
+for the translation check and its limits.
+
+The existing fake repositories remain test doubles, not a fallback for failed
+Firebase operations. Localization does not change their production bindings or
+resolve the [architecture backlog](docs/architecture.md). Quiz state still uses
+the existing recreation behavior; this feature does not claim to preserve an
+in-progress quiz across Activity recreation.
 
 ## Release status
 
@@ -107,6 +141,6 @@ Version 0.1.0 is an experimental source preview. See the [release history](https
 
 ## Verification limits
 
-Actions passed the GitFlow policy, Android debug unit tests, lint and APK generation for the checked preview. The Android unit suite currently contains only a template arithmetic test. Physical-device checks cover the signed-out screens and navigation described above; the architecture report contains proposed acceptance checks, not completed integration tests.
+Actions passed the GitFlow policy, Android debug unit tests, lint and APK generation for the checked preview. The Android unit suite includes focused quiz option-identity checks and the template arithmetic test. Physical-device checks cover the signed-out screens and navigation described above; the architecture report contains proposed acceptance checks, not completed integration tests.
 
 Google sign-in, Firebase rules, end-to-end conversations, feedback retention, voice isolation, accessibility conformance and performance remain unverified. Do not treat this prototype as a stable release or evidence of operational readiness.

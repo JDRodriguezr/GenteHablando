@@ -8,5 +8,15 @@ data class ChatMessage(
     val text: String,
     val senderId: String,
     val isFromMe: Boolean,
-    val timestamp: String
+    val timestamp: Long, // Unix epoch milliseconds; format only at the display boundary.
+    val demoText: DemoMessage? = null
 )
+
+enum class DemoMessage {
+    CONNECTED,
+    REPLY_1,
+    REPLY_2,
+    REPLY_3,
+    REPLY_4,
+    REPLY_5
+}
